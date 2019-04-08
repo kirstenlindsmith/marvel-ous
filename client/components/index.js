@@ -1,0 +1,6 @@
+export {Login, Signup} from './auth-form'
+export {default as Home} from './home'
+export {default as Navbar} from './navbar'
+export {default as AllCharacters} from './all-characters'
+export {default as OneCharacter} from './one-character'
+export {default as NoMatch} from './404page'
