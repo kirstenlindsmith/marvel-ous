@@ -47,14 +47,14 @@ class Filters extends Component {
     return (
       <Card
         collapsible="true"
-        className='filters panel'
+        className='filters panel mainCard'
         bsstyle='primary'
         header='Filter Your Search'
       >
         <form onSubmit={this.handleSubmit}>
-          <div className='row'>
-            <div className='col-md-4'>
-              <FormGroup controlid="filterByName">
+          <div className='filterParent'>
+            <div className='filterDiv'>
+              <FormGroup controlid="filterByName" id='filterByName'>
                 <FormLabel>Search by Character Name</FormLabel>
                 <FormControl
                   type='text'
@@ -63,12 +63,12 @@ class Filters extends Component {
                 />
                 {!this.state.exactMatch &&
                   <div id="helpBlock">
-                    Currently matching names beginning with the input (e.g., 'spid')
+                    Currently matching to the start of the input<br/>(e.g., 'spid')
                   </div>
                 }
                 {this.state.exactMatch &&
                   <div id="helpBlock">
-                    Currently matching to the exact input (e.g., 'spider-man')
+                    Currently matching to the exact input<br/>(e.g., 'spider-man')
                   </div>
                 }
               </FormGroup>
@@ -77,16 +77,20 @@ class Filters extends Component {
                   <InputGroup.Checkbox
                     checked={this.state.exactMatch}
                     onChange={this.handleExactMatchChange}
-                  />
+                  /> <span id='checkboxInstructions'>Search by Exact Match</span>
                 </InputGroup.Prepend>
               </InputGroup>
             </div>
           </div>
 
-          <ButtonToolbar>
+          <div className='filterButtons filters'>
+            <button className='filterButton' type='reset' onClick={this.handleReset}>RESET</button>
+            <button className='filterButton' type='submit' bsstyle="primary">APPLY</button>
+          </div>
+          {/* <ButtonToolbar className='filters'>
             <Button type='reset' onClick={this.handleReset}>RESET</Button>
             <Button type='submit' bsstyle="primary">APPLY</Button>
-          </ButtonToolbar>
+          </ButtonToolbar> */}
         </form>
       </Card>
     )

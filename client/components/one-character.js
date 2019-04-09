@@ -20,8 +20,8 @@ class OneCharacter extends Component {
       id: instance.id,
       name: instance.name,
       imageUrl: `${instance.thumbnail.path}.${instance.thumbnail.extension}`,
-      description: !instance.description.length ? 'Description not found.' : instance.description,
-      descriptionPreview: !instance.description.length ? 'Description not found.' : instance.description.length > 100 ? instance.description.substring(0.150)+"..." : instance.description,
+      description: !instance.description.length ? 'This character has no description.' : instance.description,
+      descriptionPreview: !instance.description.length ? 'This character has no description.' : instance.description.length > 100 ? instance.description.substring(0.150)+"..." : instance.description,
       comics: instance.comics.items,
       series: instance.series.items,
       stories: instance.stories.items,
@@ -171,7 +171,7 @@ class OneCharacter extends Component {
           <h3>{name}</h3>
         </div>
         <div className="Character-image" style={{backgroundImage: `url('${this.image}')`}} />
-        <p className='character-description'>
+        <p className='character-description descriptionPreview'>
           {descriptionPreview}
         </p>
         <button

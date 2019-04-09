@@ -1,6 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
 import OneCharacter from './one-character'
 import Paginator from './paginator';
 import Filters from './filters';
@@ -23,7 +21,8 @@ class AllCharacters extends React.Component {
       characters: [],
       page: 0,
       maxPage: 0,
-      limitPerPage: 20
+      limitPerPage: 20,
+      searchIsOpen: false
     }
 
     this.search = this.search.bind(this)
@@ -35,6 +34,7 @@ class AllCharacters extends React.Component {
     this.afterFilter = this.afterFilter.bind(this)
     this.sortByName = this.sortByName.bind(this)
     this.changeTotalPerPage = this.changeTotalPerPage.bind(this)
+    this.toggleSearchMenu = this.toggleSearchMenu.bind(this)
 
   }
 
@@ -46,6 +46,22 @@ class AllCharacters extends React.Component {
       page: this.state.page,
       limit: this.state.limitPerPage
     })
+  }
+
+  turnPage = (page) => {
+    if (page !== this.state.page){
+      this.search({page})
+    }
+  }
+
+  upcomingPages = (maxPage) => {
+    this.turnPage(maxPage + 1)
+  }
+
+  previousPages = (minPage) => {
+    if (minPage > 1){
+      this.turnPage(minPage - 1)
+    }
   }
 
   async search(options = {}) {
@@ -60,6 +76,9 @@ class AllCharacters extends React.Component {
     const offset = page ? (page -1) * limit : 0
 
     try {
+      this.setState({
+        loading: true
+      })
       const {characters, maxPage} = await getMarvelCharacters({ offset, name, exactMatch, sortName, limit })
       this.setState({
         characters,
@@ -82,22 +101,6 @@ class AllCharacters extends React.Component {
       this.setState({
         loading: false
       })
-    }
-  }
-
-  turnPage = (page) => {
-    if (page !== this.state.page){
-      this.search({page})
-    }
-  }
-
-  upcomingPages = (maxPage) => {
-    this.turnPage(maxPage + 1)
-  }
-
-  previousPages = (minPage) => {
-    if (minPage > 1){
-      this.turnPage(minPage - 1)
     }
   }
 
@@ -134,19 +137,51 @@ class AllCharacters extends React.Component {
     this.search({ page: this.state.page, limit: event.target.value })
   }
 
+  toggleSearchMenu(command){
+    const {searchIsOpen} = this.state
+    if (command==='open'){
+      if (!searchIsOpen) {
+        this.setState({searchIsOpen: true})
+      }
+    } else {
+      if (searchIsOpen) {
+        this.setState({searchIsOpen: false})
+      }
+    }
+  }
+
   render() {
+    const searchFontColor = this.state.searchIsOpen ? 'rgb(255, 158, 158)' : 'rgb(243, 102, 102)'
+    const searchTextStyle = {
+      color: searchFontColor
+    }
+    const searchDropDownClass = this.state.searchIsOpen ? '' : 'hidden'
 
     return (
       <div className='all-characters'>
-        {/* <Filters
-          ref={filters => this.filters = filters}
-          onApply={this.filterResults}
-          onReset={this.resetFilters}
-        />
-        <SortByName
-          onChangeSort={this.sortByName}
-          onChangeLimit={this.changeTotalPerPage}
-        /> */}
+      <div id="mainSearchDiv" className="dropdown search">
+        <span
+          className='dropLink'
+          onMouseOver={()=>this.toggleSearchMenu('open')}
+          style={searchTextStyle}
+        > Search & Filter </span>
+        <div className={`searchDropdown ${searchDropDownClass}`}>
+          <button
+            id='closeSearch'
+            type='button'
+            onClick={()=>this.toggleSearchMenu('close')}
+          >x</button>
+          <Filters
+            ref={filters => this.filters = filters}
+            onApply={this.filterResults}
+            onReset={this.resetFilters}
+          />
+          <SortByName
+            onChangeSort={this.sortByName}
+            onChangeLimit={this.changeTotalPerPage}
+          />
+        </div>
+      </div>
 
         {!this.state.loading &&
           <div className="character-gallery">
@@ -157,49 +192,18 @@ class AllCharacters extends React.Component {
         }
 
         {this.state.loading && <Loading />}
-        <Paginator
+
+        {!this.state.loading && <Paginator
           ref={paginator => this.paginator = paginator}
           page={this.state.page}
           maxPage={this.state.maxPage}
           onChangePage={this.turnPage}
           onNext={this.upcomingPages}
           onPrevious={this.previousPages}
-        />
+        />}
       </div>
     )
   }
 }
 
-// const mapStateToProps = state => {
-//   return {
-//     characters: state.characters.allCharacters
-//   }
-// }
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     fetchCharacters: () => {
-//       dispatch(fetchAllCharacters())
-//     }
-//   }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(AllCharacters)
 export default AllCharacters
-
-const filterResultsUtil = this.filterResults
-const resetFiltersUtil = this.resetFilters
-const onChangeSortUtil = this.sortByName
-const onChangeLimitUtil = this.onChangeLimit
-
-export const searchUtils = {
-  'Filters': {
-    // 'ref': filters => this.filters = filters,
-    'onApply': filterResultsUtil,
-    'onReset': resetFiltersUtil
-  },
-  'SortByName': {
-    'onChangeSort': onChangeSortUtil,
-    'onChangeLimit': onChangeLimitUtil
-  }
-}

@@ -67,7 +67,7 @@ class Paginator extends Component {
 
   handleTurnPage(event) {
     if(event.key === 'Enter'){
-      const page = +event.target.value
+      const page = event.target.value
       try {
         if(isNaN(page) || page===0 || page > this.props.maxPage){
           throw new Error('Invalid page number.')

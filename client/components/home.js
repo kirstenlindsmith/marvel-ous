@@ -2,7 +2,12 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
-export const Home = () => {
+export const Home = (props) => {
+  const email = props.email
+  let username
+  if (email){
+   username = props.email.slice(0, (props.email.indexOf('@')))
+  }
 
   return (
     <div className="landing-page">
@@ -15,13 +20,8 @@ export const Home = () => {
           </video> */}
           <div id="landingDiv">
             <h4 className="promotion" id="promotion">
-              To plant a garden <br />is to believe in tomorrow.
+              Welcome {username || email}!
             </h4>
-            <button type="button" className="btn">
-              <Link to="/products" className="link">
-                SHOP
-              </Link>
-            </button>
           </div>
         </div>
       </center>

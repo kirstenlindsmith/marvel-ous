@@ -2,33 +2,17 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import Filters from './filters';
-import SortByName from './sortByName';
-import {logout} from '../store'
-import {searchUtils} from './all-characters'
+import {me, logout} from '../store'
 
 class Navbar extends Component {
-  static defaultProps = searchUtils
 
-  constructor(props){
-    super(props)
-    this.state={
-      handleClick: props.handleClick,
-      isLoggedIn: props.isLoggedIn,
-      user: props.user
-    }
+  componentDidMount(){
+    this.props.getUser()
   }
-  render(){
-    let username;
-    const {handleClick, isLoggedIn, user} = this.state
-    console.log('searchUtils', this.props.searchUtils)
 
-    if (user) {
-      username = user.slice(0, user.indexOf('@'))
-      username = username.split('')
-      username[0] = username[0].toUpperCase()
-      username = username.join('')
-    } else username = ''
+  render(){
+    const {handleClick, isLoggedIn} = this.props
+
     return (
       <div className='navContainer'>
         <nav className='navBar'>
@@ -39,22 +23,6 @@ class Navbar extends Component {
           {isLoggedIn ? (
             <div className="right navLinks">
               {/* The navbar will show these links after a user logs in */}
-              <div className="dropdown">
-                <a href="#" className="dropLink">
-                  Search
-                </a>
-                <div className="dropdown-content">
-                  {/* <Filters
-                    ref={filters => this.filters = filters}
-                    onApply={this.filterResults}
-                    onReset={this.resetFilters}
-                  />
-                  <SortByName
-                    onChangeSort={this.sortByName}
-                    onChangeLimit={this.changeTotalPerPage}
-                  /> */}
-                </div>
-              </div>
               <Link to="/characters">
                 Characters
               </Link>
@@ -75,22 +43,6 @@ class Navbar extends Component {
           ) : (
             <div className="right navLinks">
               {/* The navbar will show these links before a user logs in */}
-              <div className="dropdown">
-                <a href="#" className="dropLink">
-                  Search
-                </a>
-                <div className="dropdown-content">
-                  {/* <Filters
-                    ref={filters => this.filters = filters}
-                    onApply={this.filterResults}
-                    onReset={this.resetFilters}
-                  />
-                  <SortByName
-                    onChangeSort={this.sortByName}
-                    onChangeLimit={this.changeTotalPerPage}
-                  /> */}
-                </div>
-              </div>
               <Link to="/characters">
                 Characters
               </Link>
@@ -125,6 +77,9 @@ const mapDispatchToProps = dispatch => {
   return {
     handleClick() {
       dispatch(logout())
+    },
+    getUser() {
+      dispatch(me())
     }
   }
 }

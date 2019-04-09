@@ -4,6 +4,20 @@ html a:hover {
   cursor: pointer
 }
 
+.hidden {
+  display: none
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+}
+
+.loading img {
+  height: 15rem;
+  margin-top: 10vh
+}
+
 .navContainer {
   display: flex;
   flex-direction: row;
@@ -48,7 +62,7 @@ html a:hover {
   color: rgb(243, 102, 102);
   background-color: inherit;
   font-family: inherit;
-  margin: 0
+  margin: 0;
 }
 
 .dropdown .dropLink:hover {
@@ -81,7 +95,7 @@ html a:hover {
 
 .dropdown-content a:hover {
   cursor: pointer;
-  background-color: rgb(243, 102, 102);;
+  background-color: rgb(243, 102, 102);
   color: white;
 }
 
@@ -93,4 +107,78 @@ html a:hover {
 
 .filters.panel:hover {
   cursor: pointer
+}
+
+.search {
+  display: flex;
+  flex-direction: row;
+}
+
+.search .dropLink{
+  font-weight: bold;
+  position: absolute;
+  margin-left: calc(100vw - 21.5rem);
+  margin-top: -2.181rem
+}
+
+.searchDropdown {
+  border: 1px solid rgb(201, 201, 201);
+  background-color: white;
+  border-radius: 5%;
+  padding: 10px;
+  margin-left: calc(100vw - 50%);
+  position: absolute;
+}
+
+#closeSearch {
+  margin-left: 90%;
+  border-radius: 50%;
+  text-align: center;
+  height: 25px;
+  width: 25px;
+  line-height: 12px;
+  background-color: rgb(226, 79, 79);
+  color: white;
+  border: none;
+  margin-bottom: 5px;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+}
+
+.mainCard {
+  margin: 10px;
+  margin-top: 2px;
+  padding: 10px
+}
+
+.filterParent {
+  border: none;
+  display: flex;
+  justify-content: center
+}
+
+.filterDiv {
+  max-width: 95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.filterButton {
+  margin: 0.25rem
+}
+
+#filterByName {
+  width: 20rem
+}
+
+#checkboxInstructions {
+  margin-left: 5px
+}
+
+.character-gallery {
+  margin-top: 10vh
 }
