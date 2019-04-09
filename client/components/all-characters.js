@@ -2,10 +2,10 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import OneCharacter from './one-character'
-import Paginator from './components/paginator';
-import Filters from './components/filters';
-import SortByName from './components/sortByName';
-import Loading from './components/loading';
+import Paginator from './paginator';
+import Filters from './filters';
+import SortByName from './sortByName';
+import Loading from './loading';
 import {getMarvelCharacters} from '../../server/api/characters'
 
 class AllCharacters extends React.Component {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {FormGroup, ControlLabel, FormControl, Form} from 'react-bootstrap'
+import {FormGroup, FormLabel, FormControl, Form} from 'react-bootstrap'
 
 class SortByName extends Component {
   constructor(props){
@@ -32,9 +32,9 @@ class SortByName extends Component {
           className='sortByName-form'
         >
           <FormGroup controlId="sortByName">
-            <ControlLabel>Sort by Name</ControlLabel>{' '}
+            <FormLabel>Sort by Name</FormLabel>{' '}
             <FormControl
-              componentClass='select'
+              componentclass='select'
               value={this.state.sort}
               onChange={this.handleSortChange}
             >
@@ -46,9 +46,9 @@ class SortByName extends Component {
           {' '}
 
           <FormGroup controlId='resultsPerPage'>
-            <ControlLabel>Results Per Page</ControlLabel>{' '}
+            <FormLabel>Results Per Page</FormLabel>{' '}
             <FormControl
-              componentClass='select'
+              componentclass='select'
               value={this.state.perPage}
               onChange={this.handlePerPageChange}
             >
@@ -64,7 +64,7 @@ class SortByName extends Component {
   }
 }
 
-SortByName.PropTypes = {
+SortByName.propTypes = {
   onChangeSort: PropTypes.func,
   onChangeLimit: PropTypes.func
 }

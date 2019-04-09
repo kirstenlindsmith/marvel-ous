@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import { Panel, ButtonToolbar, Button, FormGroup, ControlLabel, FormControl, HelpBlock, Checkbox } from 'react-bootstrap';
+import { Card, ButtonToolbar, Button, FormGroup, FormLabel, FormControl, InputGroup } from 'react-bootstrap';
 
 class Filters extends Component {
   constructor(props){
@@ -43,44 +43,44 @@ class Filters extends Component {
 
   render(){
     return (
-      <Panel
+      <Card
         collapsible
         className='filters'
-        bsStyle='primary'
+        bsstyle='primary'
         header='Filter Your Search'
       >
         <form onSubmit={this.handleSubmit}>
           <div className='row'>
             <div className='col-md-4'>
-              <FormGroup ControlId="filterByName">
-                <ControlLabel>Name</ControlLabel>
+              <FormGroup controlid="filterByName">
+                <FormLabel>Name</FormLabel>
                 <FormControl
                   type='text'
                   value={this.state.name}
                   onChange={this.handleNameFilterChange}
                 />
                 {!this.state.exactMatch &&
-                  <HelpBlock>
+                  <div id="helpBlock">
                     Matching names beginning with the input (e.g., 'spid')
-                  </HelpBlock>
+                  </div>
                 }
               </FormGroup>
 
-              <Checkbox
+              <InputGroup.Checkbox
                 checked={this.state.exactMatch}
                 onChange={this.handleExactMatchChange}
               >
                 Match the exact input (e.g., 'spider-man')
-              </Checkbox>
+              </InputGroup.Checkbox>
             </div>
           </div>
 
           <ButtonToolbar>
             <Button type='reset' onClick={this.handleReset}>RESET</Button>
-            <Button type='submit' bsStyle="primary">APPLY</Button>
+            <Button type='submit' bsstyle="primary">APPLY</Button>
           </ButtonToolbar>
         </form>
-      </Panel>
+      </Card>
     )
   }
 }
