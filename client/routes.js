@@ -39,7 +39,7 @@ class Routes extends Component {
             {/* Below routes are only available after logging in */}
             <Route exact path="/" component={Home} />
             <Route path="/home" component={Home} />
-            <Route path="/favorites" component={Favorites} />
+            {/* <Route path="/favorites" component={Favorites} /> */}
             <Route path="*" component={NoMatch} status={404} />
           </Switch>
         )}

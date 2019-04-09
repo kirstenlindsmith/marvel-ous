@@ -39,18 +39,24 @@ class AllCharacters extends React.Component {
   }
 
   componentDidMount() {
-    this.search({ sortName: this.state.sortName })
+    this.search({
+      name: this.state.filters.name.value,
+      exactMatch: this.state.filters.name.exactMatch,
+      sortName: this.state.sortName,
+      page: this.state.page,
+      limit: this.state.limitPerPage
+    })
   }
 
   async search(options = {}) {
-    this.setState({ loading: true })
     const {page, name, exactMatch, sortName, limit} = Object.assign({
       page: 1,
       name: this.state.filters.name.value,
-      exactMatch: this.search.filters.name.exactMatch,
+      exactMatch: this.state.filters.name.exactMatch,
       sortName: this.state.sortName,
       limit: this.state.limitPerPage
     }, options)
+
     const offset = page ? (page -1) * limit : 0
 
     try {
@@ -73,6 +79,9 @@ class AllCharacters extends React.Component {
       })
     } catch (error) {
       console.error('Search failed!', error)
+      this.setState({
+        loading: false
+      })
     }
   }
 
@@ -92,11 +101,11 @@ class AllCharacters extends React.Component {
     }
   }
 
-  async filterResults () {
+  async filterResults (charName, matchSetting) {
     try {
       await this.search({
-        name: this.state.filters.name.trim(),
-        exactMatch: this.state.filters.exactMatch
+        name: charName,
+        exactMatch: matchSetting
       })
       this.afterFilter()
     } catch (error) {
@@ -107,13 +116,13 @@ class AllCharacters extends React.Component {
   async resetFilters() {
     try {
       await this.search({ name: '', exactMatch: false})
-      this.afterFilter
+      this.afterFilter()
     } catch (error) {
       console.error('Failed to reset search filters!', error)
     }
   }
 
-  afterFilter = ({page, maxPage}) => {
+  afterFilter = ({page, maxPage}=this.state) => {
     this.paginator.setPages(page, maxPage)
   }
 
@@ -128,16 +137,16 @@ class AllCharacters extends React.Component {
   render() {
 
     return (
-      <div className='all-characters-container'>
-        <Filters
+      <div className='all-characters'>
+        {/* <Filters
           ref={filters => this.filters = filters}
           onApply={this.filterResults}
           onReset={this.resetFilters}
         />
         <SortByName
           onChangeSort={this.sortByName}
-          onChangeLimit={this.changeLimitPerPage}
-        />
+          onChangeLimit={this.changeTotalPerPage}
+        /> */}
 
         {!this.state.loading &&
           <div className="character-gallery">
@@ -177,3 +186,20 @@ class AllCharacters extends React.Component {
 
 // export default connect(mapStateToProps, mapDispatchToProps)(AllCharacters)
 export default AllCharacters
+
+const filterResultsUtil = this.filterResults
+const resetFiltersUtil = this.resetFilters
+const onChangeSortUtil = this.sortByName
+const onChangeLimitUtil = this.onChangeLimit
+
+export const searchUtils = {
+  'Filters': {
+    // 'ref': filters => this.filters = filters,
+    'onApply': filterResultsUtil,
+    'onReset': resetFiltersUtil
+  },
+  'SortByName': {
+    'onChangeSort': onChangeSortUtil,
+    'onChangeLimit': onChangeLimitUtil
+  }
+}

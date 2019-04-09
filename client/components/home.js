@@ -9,7 +9,7 @@ export const Home = () => {
       <br />
       <center>
         <div>
-          <img src="https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2018/plantindoor.jpg" />
+          {/* <img src="https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2018/plantindoor.jpg" /> */}
           {/* <video preload="auto" autoPlay="autoplay" loop="loop" id="img">
             <source src="https://i.imgur.com/G6qr5Ek.mp4" type="video/mp4" />
           </video> */}

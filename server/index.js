@@ -89,7 +89,11 @@ const createApp = () => {
 
 const startListening = () => {
   const server = app.listen(PORT, () =>
-    console.log(`Listening for requests on port ${PORT}!`)
+    console.log(`
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n
+    ~ Listening for requests on port ${PORT}! ~\n
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    `)
   )
   const io = socketio(server)
   require('./socket')(io)

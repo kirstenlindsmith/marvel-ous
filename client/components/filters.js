@@ -27,7 +27,9 @@ class Filters extends Component {
   handleSubmit(event){
     event.preventDefault()
     if (this.state.name.trim()) {
-      this.props.onApply()
+      const name = this.state.name.trim()
+      const match = this.state.exactMatch
+      this.props.onApply(name, match)
     }
   }
 
@@ -44,8 +46,8 @@ class Filters extends Component {
   render(){
     return (
       <Card
-        collapsible
-        className='filters'
+        collapsible="true"
+        className='filters panel'
         bsstyle='primary'
         header='Filter Your Search'
       >
@@ -53,7 +55,7 @@ class Filters extends Component {
           <div className='row'>
             <div className='col-md-4'>
               <FormGroup controlid="filterByName">
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Search by Character Name</FormLabel>
                 <FormControl
                   type='text'
                   value={this.state.name}
@@ -61,17 +63,23 @@ class Filters extends Component {
                 />
                 {!this.state.exactMatch &&
                   <div id="helpBlock">
-                    Matching names beginning with the input (e.g., 'spid')
+                    Currently matching names beginning with the input (e.g., 'spid')
+                  </div>
+                }
+                {this.state.exactMatch &&
+                  <div id="helpBlock">
+                    Currently matching to the exact input (e.g., 'spider-man')
                   </div>
                 }
               </FormGroup>
-
-              <InputGroup.Checkbox
-                checked={this.state.exactMatch}
-                onChange={this.handleExactMatchChange}
-              >
-                Match the exact input (e.g., 'spider-man')
-              </InputGroup.Checkbox>
+              <InputGroup>
+                <InputGroup.Prepend>
+                  <InputGroup.Checkbox
+                    checked={this.state.exactMatch}
+                    onChange={this.handleExactMatchChange}
+                  />
+                </InputGroup.Prepend>
+              </InputGroup>
             </div>
           </div>
 

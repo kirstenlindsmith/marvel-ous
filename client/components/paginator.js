@@ -22,7 +22,7 @@ class Paginator extends Component {
   shouldComponentUpdate(nextProps){
     if (this.props !== nextProps){
       return (this.state.pages.indexOf(nextProps.page) === -1)
-    }
+    } else return false
   }
 
   componentDidUpdate(){

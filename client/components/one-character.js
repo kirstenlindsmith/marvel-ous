@@ -14,11 +14,12 @@ class OneCharacter extends Component {
   constructor(props) {
     super(props)
     const {instance} = props
+    // console.log('instance!', instance)
     this.state= {
       displayModal: false,
       id: instance.id,
       name: instance.name,
-      imageUrl: `${instance.thumbnail.path}.${instance.thumbail.extension}`,
+      imageUrl: `${instance.thumbnail.path}.${instance.thumbnail.extension}`,
       description: !instance.description.length ? 'Description not found.' : instance.description,
       descriptionPreview: !instance.description.length ? 'Description not found.' : instance.description.length > 100 ? instance.description.substring(0.150)+"..." : instance.description,
       comics: instance.comics.items,
@@ -29,7 +30,7 @@ class OneCharacter extends Component {
       comicLink: instance.urls.find(element => element.type==="comiclink")
     }
 
-    this.showModal = this.showModal.bind(this)
+    this.openModal = this.openModal.bind(this)
     this.handleAddToFavorites = this.handleAddToFavorites.bind(this)
     this.isUserLoggedIn = this.isUserLoggedIn.bind(this)
     this.redirectToLogin = this.redirectToLogin.bind(this)
@@ -38,8 +39,8 @@ class OneCharacter extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchCharacter()
-    this.props.fetchFavorites()
+    // this.props.fetchCharacter()
+    // this.props.fetchFavorites()
   }
 
   openModal() {
@@ -133,8 +134,9 @@ class OneCharacter extends Component {
 
   createTab(category, number){
     const categoryField = this.state[category]
+    // console.log('category', category)
     return (
-      <Tab eventKey={number} title={`${categoryField.slice(0,1).toUpperCase()+categoryField.slice(1)} ( ${categoryField.length} )`}>
+      <Tab eventKey={number} title={`${category.slice(0,1).toUpperCase()+category.slice(1)} ( ${categoryField.length} )`}>
         {categoryField.length ?
           <ul className='list-inline'>
             {categoryField.map((item, index)=>
@@ -245,19 +247,19 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    fetchProduct: () => {
-      const characterId = ownProps.match.params.characterId
-      dispatch(fetchOneCharacter(characterId))
-    },
-    fetchCart: () => {
-      dispatch(fetchFavorites())
-    },
-    addItem: (id, character) => {
-      dispatch(addFavorite(id, character))
-    },
-    deleteCartItem: (characterId) => {
-      dispatch(deleteFavorite(characterId))
-    }
+    // fetchCharacter: () => {
+    //   const characterId = ownProps.match.params.characterId
+    //   dispatch(fetchOneCharacter(characterId))
+    // },
+    // fetchFavorites: () => {
+    //   dispatch(fetchFavorites())
+    // },
+    // addFavorite: (id, character) => {
+    //   dispatch(addFavorite(id, character))
+    // },
+    // deleteFavorite: (characterId) => {
+    //   dispatch(deleteFavorite(characterId))
+    // }
   }
 }
 
