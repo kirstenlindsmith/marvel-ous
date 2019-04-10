@@ -99,7 +99,7 @@ class AllCharacters extends Component {
               )
             })
           )
-          console.log('CHARACTERS IN FAVE SEARCH', characters)
+
           if (filtering){
             if (exactMatch){
               characters = characters.filter(char => char.name === searchName.toLowerCase().trim())
