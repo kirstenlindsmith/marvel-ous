@@ -1,3 +1,4 @@
+
 html a:hover {
   text-decoration: none !important;
   color: rgb(255, 158, 158);
@@ -6,6 +7,69 @@ html a:hover {
 
 .hidden {
   display: none
+}
+
+button {
+  display: inline-block;
+  position: relative;
+  height: 33px;
+  line-height: 33px;
+  padding: 0 15px;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 7px !important;
+  outline: 0;
+  background: #d02e17;
+  background-image: -webkit-linear-gradient(top, #e74a29 0%, #e6451b 50%, #d02e17 50%, #b3150b 100%);
+  background-image: -moz-linear-gradient(top, #e74a29 0%, #e6451b 50%, #d02e17 50%, #b3150b 100%);
+  background-image: -o-linear-gradient(top, #e74a29 0%, #e6451b 50%, #d02e17 50%, #b3150b 100%);
+  background-image: linear-gradient(to bottom, #e74a29 0%, #e6451b 50%, #d02e17 50%, #b3150b 100%);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+button:before, button:after {
+  content: '';
+  position: absolute;
+}
+
+button:before {
+  display: none;
+  top: -5px;
+  bottom: -5px;
+  left: -5px;
+  right: -5px;
+  z-index: -1;
+  border-radius: 7px !important;
+  background: #ee442c;
+  background-image: -webkit-linear-gradient(top, #b32511, #f3533c);
+  background-image: -moz-linear-gradient(top, #b32511, #f3533c);
+  background-image: -o-linear-gradient(top, #b32511, #f3533c);
+  background-image: linear-gradient(to bottom, #b32511, #f3533c);
+}
+
+button:active {
+  background: #e63b1b;
+  background-image: -webkit-linear-gradient(top, #a9110b 0%, #de3819 60%, #e63b1b 100%);
+  background-image: -moz-linear-gradient(top, #a9110b 0%, #de3819 60%, #e63b1b 100%);
+  background-image: -o-linear-gradient(top, #a9110b 0%, #de3819 60%, #e63b1b 100%);
+  background-image: linear-gradient(to bottom, #a9110b 0%, #de3819 60%, #e63b1b 100%);
+}
+
+button:active:after {
+  border-color: #e63b1b;
+}
+
+button:after {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  border-bottom: 0;
+  border-radius: 7px !important;
 }
 
 .loading {
@@ -22,21 +86,22 @@ html a:hover {
   display: flex;
   flex-direction: row;
   padding-bottom: 0.5rem;
+  box-shadow: 0 2px 5px gray
 }
 
 .navBar {
   display: flex;
   color: rgb(243, 102, 102);
-  margin-top: 1%
-}
-
-#siteTitle {
-  align-items: flex-end;
+  /* margin-top: 1% */
 }
 
 .navBar h1 {
   margin: 0;
-  margin-left: 5%
+  padding-top: 6%;
+  margin-bottom: -4%;
+  margin-left: 7%;
+  font-family: 'Cabin Sketch', cursive;
+  font-size: 44pt;
 }
 
 .navLinks {
@@ -117,8 +182,8 @@ html a:hover {
 .search .dropLink{
   font-weight: bold;
   position: absolute;
-  margin-left: calc(100vw - 21.5rem);
-  margin-top: -2.181rem
+  margin-left: calc(100vw - 22rem);
+  margin-top: -2.22rem
 }
 
 .searchDropdown {
@@ -132,14 +197,12 @@ html a:hover {
 
 #closeSearch {
   margin-left: 90%;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   text-align: center;
   height: 25px;
   width: 25px;
+  padding: 0;
   line-height: 12px;
-  background-color: rgb(226, 79, 79);
-  color: white;
-  border: none;
   margin-bottom: 5px;
 }
 
@@ -179,11 +242,64 @@ html a:hover {
   margin-left: 5px
 }
 
-.character-gallery {
-  margin-top: 10vh
+.paginator nav {
+  display: flex;
+  justify-content: center
 }
 
-.paginator nav {
-  margin-top: -6.5%
+.character-gallery {
+  margin-top: 10vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
+
+.character {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 300px;
+  min-height: 300px;
+  text-align: center;
+  margin: 20px;
+  box-shadow: 1px 4px 8px 0 rgba(0, 0, 0, 0.4)
+}
+
+.character:hover {
+  box-shadow: 0 0 15px 5px red;
+}
+
+.character-name {
+  background: linear-gradient(
+    90deg,
+    rgb(192, 0, 0) 0%,
+    rgb(216, 49, 49) 50%,
+    rgb(238, 121, 121) 100%
+  );
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: white;
+  padding-top: 8px;
+  font-family: 'Cabin Sketch', cursive;
+}
+
+.character-image {
+  height: 300px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat
+}
+
+.descriptionPreview {
+  margin-top: 4%;
+  padding: 1% 3%
+}
+
+.oneCharacterButton {
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5%;
+  width: 50%
+}
+
 

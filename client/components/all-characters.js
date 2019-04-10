@@ -48,30 +48,6 @@ class AllCharacters extends React.Component {
     })
   }
 
-  // shouldComponentUpdate(){
-  //   return typeof(this.state.page)==='number' ? false : true
-  // }
-
-  // componentDidUpdate(){
-  //   this.setState({page: parseInt(this.state.page)})
-  // }
-
-  turnPage = (page) => {
-    if (page !== this.state.page){
-      this.search({page})
-    }
-  }
-
-  upcomingPages = (maxPage) => {
-    this.turnPage(maxPage + 1)
-  }
-
-  previousPages = (minPage) => {
-    if (minPage > 1){
-      this.turnPage(minPage - 1)
-    }
-  }
-
   async search(options = {}) {
     const {page, name, exactMatch, sortName, limit} = Object.assign({
       page: 1,
@@ -91,7 +67,7 @@ class AllCharacters extends React.Component {
       this.setState({
         characters,
         maxPage,
-        page: characters.length ? parseInt(page) : 0,
+        page: characters.length ? parseInt(page) : 0, //to avoid type coercion
         filters: {
           name: {
             value: name,
@@ -158,8 +134,23 @@ class AllCharacters extends React.Component {
     }
   }
 
+  turnPage = (page) => {
+    if (page !== this.state.page){
+      this.search({page})
+    }
+  }
+
+  upcomingPages = (maxPage) => {
+    this.turnPage(maxPage + 1)
+  }
+
+  previousPages = (minPage) => {
+    if (minPage > 1){
+      this.turnPage(minPage - 5)
+    }
+  }
+
   render() {
-    console.log('page in AC:', typeof(this.state.page))
     const searchFontColor = this.state.searchIsOpen ? 'rgb(255, 158, 158)' : 'rgb(243, 102, 102)'
     const searchTextStyle = {
       color: searchFontColor

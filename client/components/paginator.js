@@ -57,7 +57,6 @@ class Paginator extends Component {
   }
 
   handleTurnPage(event) {
-    // console.log('event', event.target.value)
     const page = event.target.value
     try {
       if(isNaN(page) || page===0 || page > this.props.maxPage){
@@ -72,20 +71,9 @@ class Paginator extends Component {
   }
 
   render(){
-    console.log('pages', this.state.pages)
     return (
       <div className='paginator'>
         <div className="text-center center-block paginator-goToPage">
-          <label htmlFor="goToPage">Go to Page</label>
-          <input
-            id="goToPage"
-            ref={input => this.input = input}
-            type='text'
-            maxLength={2}
-            className="form-control text-center"
-            onKeyDown={this.handleNumbers}
-            onKeyUp={this.handleTurnPage}
-          />
           <small className="help-block">
             Page {this.props.page} out of {this.props.maxPage}.
           </small>

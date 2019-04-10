@@ -18,10 +18,10 @@ class OneCharacter extends Component {
     this.state= {
       displayModal: false,
       id: instance.id,
-      name: instance.name,
+      name: instance.name.length>15 ? instance.name.slice(0,15)+"..." : instance.name,
       imageUrl: `${instance.thumbnail.path}.${instance.thumbnail.extension}`,
-      description: !instance.description.length ? 'This character has no description.' : instance.description,
-      descriptionPreview: !instance.description.length ? 'This character has no description.' : instance.description.length > 100 ? instance.description.substring(0.150)+"..." : instance.description,
+      description: !instance.description.length ? 'This character has no description. See the resource links for more information.' : instance.description,
+      descriptionPreview: !instance.description.length ? `This character has no description. Click for more info!` : instance.description.length > 100 ? instance.description.slice(0,100)+"..." : instance.description,
       comics: instance.comics.items,
       series: instance.series.items,
       stories: instance.stories.items,
@@ -166,21 +166,21 @@ class OneCharacter extends Component {
       : this.redirectToLogin
 
     return (
-      <div className='character'>
+      <div className='character' onClick={this.openModal}>
         <div className='text-center character-name'>
           <h3>{name}</h3>
         </div>
-        <div className="Character-image" style={{backgroundImage: `url('${this.image}')`}} />
+        <div className="character-image" style={{backgroundImage: `url('${imageUrl}')`}} />
         <p className='character-description descriptionPreview'>
           {descriptionPreview}
         </p>
-        <button
+        {/* <button
           type='button'
           className='oneCharacterButton'
           onClick={this.openModal}
         >
-            Select
-        </button>
+            Open
+        </button> */}
         <Modal
           show={this.state.displayModal}
           onHide={this.closeModal}
