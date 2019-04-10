@@ -10,14 +10,14 @@ const REMOVE_FROM_FAVORITES = 'REMOVE_FROM_FAVORITES'
 /**
  * INITIAL STATE
  */
-const defaultFavorites = {}
+const defaultFavorites = []
 
 /**
  * ACTION CREATORS
  */
 const getFavorites = favorites => ({type: GET_FAVORITES, favorites})
 const addToFavorites = newFavorite => ({type: ADD_TO_FAVORITES, newFavorite})
-const removeFromFavorites = characterId => ({type: REMOVE_FROM_FAVORITES, characterId})
+const removeFromFavorites = name => ({type: REMOVE_FROM_FAVORITES, name})
 
 /**
  * THUNK CREATORS
@@ -27,34 +27,36 @@ export const fetchFavorites = () => {
   return async dispatch => {
     try {
       const {data} = await axios.get('/api/favorites')
-
-      dispatch(getFavorites(data))
+      const favorites = data.map(fave=> {
+        return fave.name
+      })
+      dispatch(getFavorites(favorites))
     } catch (error) {
-      console.error(error)
+      console.error('Error fetching favorites from the database:', error)
     }
   }
 }
 
-export const addFavorite = (characterId, character) => {
+export const addFavorite = (name) => {
   return async dispatch => {
     try {
-      await axios.post('/api/favorites', characterId)
+      await axios.post('/api/favorites', {name})
 
-      dispatch(addToFavorites(character))
+      dispatch(addToFavorites(name))
     } catch (error) {
-      console.error(error)
+      console.error('Error adding new favorite:', error)
     }
   }
 }
 
-export const deleteFavorite = (characterId) => {
+export const deleteFavorite = (name) => {
   return async dispatch => {
     try {
-      await axios.delete(`/api/favorites/${characterId}`)
+      await axios.delete(`/api/favorites/${name}`)
 
-      dispatch(removeFromFavorites(characterId))
+      dispatch(removeFromFavorites(name))
     } catch (error) {
-      console.error(error)
+      console.error('Error deleting favorite:', error)
     }
   }
 }
@@ -68,13 +70,13 @@ export default function(state = defaultFavorites, action) {
     case GET_FAVORITES:
       return action.favorites
     case ADD_TO_FAVORITES: {
-      return {...state, favorites: [...state.favorites, action.newFavorite]}
+      return [...state, action.newFavorite]
     }
     case REMOVE_FROM_FAVORITES: {
-      const favorites = state.favorites.filter(
-        item => item.id !== action.characterId
+      const favorites = state.filter(
+        item => item !== action.name
       )
-      return {...state, favorites}
+      return favorites
     }
     default:
       return state

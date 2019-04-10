@@ -13,8 +13,8 @@ const socketio = require('socket.io')
 
 module.exports = app
 
-// This is a global Mocha hook, used for resource cleanup.
-// Otherwise, Mocha v4+ never quits after tests.
+// global Mocha hook, for resource cleanup.
+// otherwise, Mocha v4+ never quits after tests.
 if (process.env.NODE_ENV === 'test') {
   after('close the session store', () => sessionStore.stopExpiringSessions())
 }
@@ -89,7 +89,11 @@ const createApp = () => {
 
 const startListening = () => {
   const server = app.listen(PORT, () =>
-    console.log(`Listening for requests on port ${PORT}!`)
+    console.log(`
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n
+    ~ Listening for requests on port ${PORT}! ~\n
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    `)
   )
   const io = socketio(server)
   require('./socket')(io)

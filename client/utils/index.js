@@ -1,3 +1,5 @@
+
+
 export const exampleCharacter = {
   "code": 200,
   "status": "Ok",

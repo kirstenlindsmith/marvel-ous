@@ -1,100 +1,93 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {Modal} from 'react-bootstrap'
-import {
-  fetchOneCharacter,
-  addFavorite,
-  fetchFavorites,
-  deleteFavorite
-} from '../store'
+import PropTypes from 'prop-types'
+import history from '../history'
+import {Modal, Tabs, Tab} from 'react-bootstrap'
 import toastr from 'toastr'
+import {addFavorite, fetchFavorites, deleteFavorite} from '../store'
+toastr.options = {
+  closeButton: true,
+  debug: false,
+  newestOnTop: false,
+  progressBar: false,
+  positionClass: 'toast-bottom-left',
+  preventDuplicates: false,
+  onclick: null,
+  showDuration: '300',
+  hideDuration: '1000',
+  timeOut: '5000',
+  extendedTimeOut: '1000',
+  showEasing: 'swing',
+  hideEasing: 'linear',
+  showMethod: 'fadeIn',
+  hideMethod: 'fadeOut'
+}
 
 class OneCharacter extends Component {
   constructor(props) {
     super(props)
     const {instance} = props
-    this.state= {
+    this.state = {
       displayModal: false,
       id: instance.id,
-      name: instance.name,
-      imageUrl: `${instance.thumbnail.path}.${instance.thumbail.extension}`,
-      description: !instance.description.length ? 'Description not found.' : instance.description,
-      descriptionPreview: !instance.description.length ? 'Description not found.' : instance.description.length > 100 ? instance.description.substring(0.150)+"..." : instance.description,
-      detail: instance.urls.find(element => element.type==='detail' ? element.url : null),
-      wiki: instance.urls.find(element => element.type==="wiki" ? element.url : null),
-      comics: instance.urls.find(element => element.type==="comiclink" ? element.url : null)
+      fullname: instance.name,
+      name:
+        instance.name.length > 15
+          ? instance.name.slice(0, 15) + '...'
+          : instance.name,
+      imageUrl: `${instance.thumbnail.path}.${instance.thumbnail.extension}`,
+      description: !instance.description.length
+        ? 'This character has no description. See the resource links for more information.'
+        : instance.description,
+      descriptionPreview: !instance.description.length
+        ? `This character has no description. Click for more info!`
+        : instance.description.length > 100
+          ? instance.description.slice(0, 100) + '...'
+          : instance.description,
+      comics: instance.comics.items,
+      series: instance.series.items,
+      stories: instance.stories.items,
+      detail: instance.urls.find(element => element.type === 'detail'),
+      wiki: instance.urls.find(element => element.type === 'wiki'),
+      comicLink: instance.urls.find(element => element.type === 'comiclink')
     }
 
-    this.showModal = this.showModal.bind(this)
+    this.toggleModal = this.toggleModal.bind(this)
     this.handleAddToFavorites = this.handleAddToFavorites.bind(this)
     this.isUserLoggedIn = this.isUserLoggedIn.bind(this)
     this.redirectToLogin = this.redirectToLogin.bind(this)
     this.handleRemoveFromFavorites = this.handleRemoveFromFavorites.bind(this)
+    this.createTab = this.createTab.bind(this)
   }
 
   componentDidMount() {
-    this.props.fetchCharacter()
     this.props.fetchFavorites()
   }
 
-  openModal() {
-    this.setState({ displayModal: true })
-  }
-
-  closeModal() {
-    this.setState({ displayModal: false })
+  toggleModal() {
+    if(this.state.displayModal){
+      this.setState({displayModal: false})
+    } else this.setState({displayModal: true})
   }
 
   handleAddToFavorites() {
-    const character = this.props.product
-    const characterId = this.props.character.id
-
-    this.props.addCharacter(characterId, character)
-
-    toastr.options = {
-      closeButton: true,
-      debug: false,
-      newestOnTop: false,
-      progressBar: false,
-      positionClass: 'toast-bottom-left',
-      preventDuplicates: false,
-      onclick: null,
-      showDuration: '300',
-      hideDuration: '1000',
-      timeOut: '5000',
-      extendedTimeOut: '1000',
-      showEasing: 'swing',
-      hideEasing: 'linear',
-      showMethod: 'fadeIn',
-      hideMethod: 'fadeOut'
+    const character = this.state.fullname
+    if (!(this.props.favorites.includes(character))){
+      this.props.addFavorite(character)
+      toastr.success('Added character to favorites.', 'Success!')
+    } else {
+      toastr.warning('Character already in favorites.', 'Alert')
     }
-    toastr.success('Added character to favorites.', 'Success!')
   }
 
   handleRemoveFromFavorites() {
-    const characterId = this.props.character.id
-
-    this.props.deleteFavorite(characterId)
-
-    toastr.options = {
-      closeButton: true,
-      debug: false,
-      newestOnTop: false,
-      progressBar: false,
-      positionClass: 'toast-bottom-left',
-      preventDuplicates: false,
-      onclick: null,
-      showDuration: '300',
-      hideDuration: '1000',
-      timeOut: '5000',
-      extendedTimeOut: '1000',
-      showEasing: 'swing',
-      hideEasing: 'linear',
-      showMethod: 'fadeIn',
-      hideMethod: 'fadeOut'
+    const character = this.state.fullname
+    if (this.props.favorites.includes(character)){
+      this.props.deleteFavorite(character)
+      toastr.error('Character removed from favorites.', 'Success!')
+    } else {
+      toastr.warning('Character not a favorite.', 'Alert')
     }
-    toastr.error('Character removed from favorites.', 'Success!')
   }
 
   isUserLoggedIn() {
@@ -121,128 +114,169 @@ class OneCharacter extends Component {
       showMethod: 'fadeIn',
       hideMethod: 'fadeOut'
     }
-    toastr.warning('You must be signed in to save favorite characters!', 'Notice:')
+    toastr.info('You must be signed in to save favorite characters!', 'Alert')
+    setTimeout(() => {
+      toastr.info('Redirecting to login page.', 'Alert')
+    }, 800)
+    setTimeout(() => {
+      history.push('/login')
+    }, 3000)
+  }
 
-    const history = this.props.history
-    history.push('/login')
+  createTab(category, number) {
+    const categoryField = this.state[category]
+    return (
+      <Tab
+        eventKey={number}
+        title={`${category.slice(0, 1).toUpperCase() + category.slice(1)} ( ${
+          categoryField.length
+        } )`}
+      >
+        {categoryField.length ? (
+          <ul className="list-inline">
+            {categoryField.map((item, index) => (
+              <li key={index}>
+                <span className="label label-default">{item.name}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="noneFound">None available.</p>
+        )}
+      </Tab>
+    )
   }
 
   render() {
-    const {id, name, imageUrl, description, descriptionPreview, detail, wiki, comics} = this.state
+    const {
+      id,
+      fullname,
+      name,
+      imageUrl,
+      description,
+      descriptionPreview,
+      detail,
+      wiki,
+      comicLink
+    } = this.state
+
+    let inFaves
+
+    if (this.props.favorites.includes(fullname)) {
+      inFaves = true
+    } else inFaves = false
+
+    const buttonClickAction = this.isUserLoggedIn()
+      ? this.handleAddToFavorites
+      : this.redirectToLogin
 
     return (
-      <div className='character'>
-        <div className='text-center character-name'>
+      <div className="character">
+        <div className="text-center character-name" onClick={this.toggleModal}>
           <h3>{name}</h3>
         </div>
-        <div className="Character-image" style={{backgroundImage: `url('${this.image}')`}} />
-        <p className='character-description'>
+        <div
+          className="character-image"
+          style={{backgroundImage: `url('${imageUrl}')`}}
+          onClick={this.toggleModal}
+        />
+        <p className="character-description descriptionPreview" onClick={this.toggleModal}>
           {descriptionPreview}
         </p>
-        <button
-          type='button'
-          className='oneCharacterButton'
-          onClick={this.openModal}
-        >
-            Select
-        </button>
+
         <Modal
           show={this.state.displayModal}
-          onHide={this.closeModal}
-          dialogClassName='character-modal'
+          onHide={()=>{console.log('mandatory onClick function')}}
+          dialogClassName="character-modal"
+          className="character-modal"
         >
-          <Modal.Header closeButton>
-            <Modal.Title>{name}</Modal.Title>
+          <Modal.Header>
+            <Modal.Title>{fullname}</Modal.Title>
+            {!inFaves ? (
+              <button
+                className="addFaveButton"
+                type="button"
+                name="add"
+                onClick={buttonClickAction}
+              >
+                Save to Favorites
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="remove"
+                onClick={this.handleRemoveFromFavorites}
+              >
+                Remove from Favorites
+              </button>
+            )}
+            <button type="button" onClick={this.toggleModal}>
+              x
+            </button>
           </Modal.Header>
           <Modal.Body>
-            <img src={imageUrl} alt={name} className='character-modal-image' />
-            <div className='character-modal-description'>
-              <h4>Description</h4>
+            <img src={imageUrl} alt={name} className="character-modal-image" />
+            <div className="character-modal-description">
               <p>{description}</p>
-
+              {detail && (
+                <a href={detail.url} className="smallButton"><button type='button'>
+                    More Details
+                  </button>
+                </a>
+              )}
+              {wiki && (
+                <a href={wiki.url} className="smallButton"><button type='button'>
+                    Marvel Wiki Page
+                  </button>
+                </a>
+              )}
+              {comicLink && (
+                <a href={comicLink.url} className="smallButton"><button type='button'>
+                    See Comics
+                  </button>
+                </a>
+              )}
             </div>
+
+            <Tabs
+              defaultActiveKey={1}
+              id="characterTabs"
+              className="hidden-xs character-modal-tabs"
+            >
+              {this.createTab('comics', 1)}
+              {this.createTab('series', 2)}
+              {this.createTab('stories', 3)}
+            </Tabs>
           </Modal.Body>
         </Modal>
       </div>
     )
-
-    // if (id) {
-    //   let inFaves = []
-
-    //   if (this.props.favorites.favoritesList) {
-    //     inFaves = this.props.order.favoritesList.filter(
-    //       item => item.id === character.id
-    //     )
-    //   } else inFaves = []
-
-    //   const buttonClickAction = this.isUserLoggedIn()
-    //     ? this.handleAddToFavorites
-    //     : this.redirectToLogin
-
-    //   return (
-    //     <div>
-    //       <div className="detailed-container">
-    //         <Link to="/characters" className="link">
-    //           <b>
-    //             {'⇦ '}
-    //             <u>Return to All Characters</u>
-    //           </b>
-    //         </Link>
-    //         <img src={imageUrl} />
-    //         <div className="about">
-    //           <h1>{name}</h1>
-    //           <hr />
-    //           {inFaves.length === 0 ? (
-    //             <button type="button" name="add" onClick={buttonClickAction}>
-    //               Save to Favorites
-    //             </button>
-    //           ) : (
-    //             <button
-    //               type="button"
-    //               className="remove"
-    //               onClick={this.handleRemoveFromFavorites}
-    //             >
-    //               Remove from Favorites
-    //             </button>
-    //           )}
-    //           <p>
-    //             <b>Description</b>:
-    //           </p>
-    //           {description}
-    //         </div>
-    //       </div>
-    //     </div>
-    //   )
-    // } else {
-    //   return <div />
-    // }
   }
 }
 
 const mapStateToProps = state => {
   return {
-    character: state.characters.selectedCharacter,
     user: state.user,
     favorites: state.favorites
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = dispatch => {
   return {
-    fetchProduct: () => {
-      const characterId = ownProps.match.params.characterId
-      dispatch(fetchOneCharacter(characterId))
-    },
-    fetchCart: () => {
+    fetchFavorites: () => {
       dispatch(fetchFavorites())
     },
-    addItem: (id, character) => {
-      dispatch(addFavorite(id, character))
+    addFavorite: (character) => {
+      dispatch(addFavorite(character))
     },
-    deleteCartItem: (characterId) => {
-      dispatch(deleteFavorite(characterId))
+    deleteFavorite: (character) => {
+      dispatch(deleteFavorite(character))
     }
   }
+}
+
+OneCharacter.propTypes = {
+  instance: PropTypes.object.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OneCharacter)
