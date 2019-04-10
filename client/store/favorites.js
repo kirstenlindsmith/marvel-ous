@@ -10,7 +10,7 @@ const REMOVE_FROM_FAVORITES = 'REMOVE_FROM_FAVORITES'
 /**
  * INITIAL STATE
  */
-const defaultFavorites = {}
+const defaultFavorites = []
 
 /**
  * ACTION CREATORS
@@ -26,9 +26,11 @@ const removeFromFavorites = characterId => ({type: REMOVE_FROM_FAVORITES, charac
 export const fetchFavorites = () => {
   return async dispatch => {
     try {
-      const {data} = await axios.get('/api/favorites')
+      const {data} = await axios.get('/auth/me')
+      const user = data
+      console.log('in store:', user)
 
-      dispatch(getFavorites(data))
+      // dispatch(getFavorites(data))
     } catch (error) {
       console.error(error)
     }

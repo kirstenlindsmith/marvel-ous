@@ -1,6 +1,7 @@
 const crypto = require('crypto')
 const Sequelize = require('sequelize')
 const db = require('../db')
+const Favorite = require('./favorite')
 
 const User = db.define('user', {
   password: {
@@ -29,8 +30,14 @@ const User = db.define('user', {
   googleId: {
     type: Sequelize.STRING,
     allowNull: true
+  },
+},
+{
+  defaultScope: {
+    include: [{model: Favorite, as: 'Favorites'}]
   }
-})
+}
+)
 
 module.exports = User
 

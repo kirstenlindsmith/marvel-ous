@@ -1,7 +1,7 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Favorite} = require('../server/db/models')
 
 const users = [
   {
@@ -10,7 +10,7 @@ const users = [
   },
   {
     email: 'kirsten@email.com',
-    password: '1234'
+    password: '1234',
   }
 
 ]
@@ -18,17 +18,32 @@ const users = [
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
+  try {
+    await Promise.all(
+      users.map(user => {
+        return User.create(user)
+      })
+    )
+    console.log(`successfully seeded ${users.length} users`)
+  } catch (error) {
+    console.error('Error seeding users:', error)
+  }
 
-  await Promise.all(
-    users.map(user => {
-      return User.create(user)
-    })
-  )
+  const createdUsers = await User.findAll()
 
-  console.log(`successfully seeded ${users.length} users`)
+  try {
+    await Promise.all(
+      createdUsers.map(user=> {
+        return Favorite.create({name: 'Spider-Man', userId: user.id})
+      })
+    )
+    console.log(`successfully seeded ${users.length} user Favorites`)
+  } catch (error) {
+    console.error('Error seeing user favorites:', error)
+  }
 }
 
-// separating `seed` function from the `runSeed` function to isolate error handling and exit trapping.
+// separating `seed` function from the `runSeed` function for error handling
 async function runSeed() {
   console.log('seeding...')
   try {

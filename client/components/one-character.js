@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
+import history from '../history'
 import {Modal, Tabs, Tab} from 'react-bootstrap'
 import {
   fetchOneCharacter,
@@ -31,6 +32,7 @@ class OneCharacter extends Component {
     }
 
     this.openModal = this.openModal.bind(this)
+    this.closeModal = this.closeModal.bind(this)
     this.handleAddToFavorites = this.handleAddToFavorites.bind(this)
     this.isUserLoggedIn = this.isUserLoggedIn.bind(this)
     this.redirectToLogin = this.redirectToLogin.bind(this)
@@ -39,23 +41,24 @@ class OneCharacter extends Component {
   }
 
   componentDidMount() {
-    // this.props.fetchCharacter()
-    // this.props.fetchFavorites()
+    this.props.fetchFavorites()
   }
 
   openModal() {
     this.setState({ displayModal: true })
   }
 
-  closeModal() {
-    this.setState({ displayModal: false })
+  async closeModal() {
+    console.log('close hit')
+    await this.setState({ displayModal: false })
+    console.log('post-close:', this.state.displayModal)
   }
 
   handleAddToFavorites() {
-    const character = this.props.product
-    const characterId = this.props.character.id
+    const character = this.state.name
+    const characterId = this.state.id
 
-    this.props.addCharacter(characterId, character)
+    this.props.addFavorite(characterId, character)
 
     toastr.options = {
       closeButton: true,
@@ -78,7 +81,7 @@ class OneCharacter extends Component {
   }
 
   handleRemoveFromFavorites() {
-    const characterId = this.props.character.id
+    const characterId = this.state.id
 
     this.props.deleteFavorite(characterId)
 
@@ -126,15 +129,17 @@ class OneCharacter extends Component {
       showMethod: 'fadeIn',
       hideMethod: 'fadeOut'
     }
-    toastr.warning('You must be signed in to save favorite characters!', 'Notice:')
-
-    const history = this.props.history
-    history.push('/login')
+    toastr.info('You must be signed in to save favorite characters!', 'Alert')
+    setTimeout(()=>{
+      toastr.info('Redirecting to login page.', 'Alert')
+    }, 800)
+    setTimeout(()=>{
+      history.push('/login')
+    }, 3000)
   }
 
   createTab(category, number){
     const categoryField = this.state[category]
-    // console.log('category', category)
     return (
       <Tab eventKey={number} title={`${category.slice(0,1).toUpperCase()+category.slice(1)} ( ${categoryField.length} )`}>
         {categoryField.length ?
@@ -152,6 +157,7 @@ class OneCharacter extends Component {
   }
 
   render() {
+    console.log('modal display', this.state.displayModal)
     const {id, name, imageUrl, description, descriptionPreview, detail, wiki, comicLink} = this.state
     let inFaves = []
 
@@ -174,19 +180,14 @@ class OneCharacter extends Component {
         <p className='character-description descriptionPreview'>
           {descriptionPreview}
         </p>
-        {/* <button
-          type='button'
-          className='oneCharacterButton'
-          onClick={this.openModal}
-        >
-            Open
-        </button> */}
+
         <Modal
           show={this.state.displayModal}
           onHide={this.closeModal}
           dialogClassName='character-modal'
+          className='character-modal'
         >
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title>{name}</Modal.Title>
             {inFaves.length === 0 ? (
               <button className="addFaveButton" type="button" name="add" onClick={buttonClickAction}>
@@ -201,6 +202,7 @@ class OneCharacter extends Component {
                 Remove from Favorites
               </button>
             )}
+            <button type="button" onClick={this.closeModal}>x</button>
           </Modal.Header>
           <Modal.Body>
             <img src={imageUrl} alt={name} className='character-modal-image' />
@@ -245,21 +247,17 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    // fetchCharacter: () => {
-    //   const characterId = ownProps.match.params.characterId
-    //   dispatch(fetchOneCharacter(characterId))
-    // },
-    // fetchFavorites: () => {
-    //   dispatch(fetchFavorites())
-    // },
-    // addFavorite: (id, character) => {
-    //   dispatch(addFavorite(id, character))
-    // },
-    // deleteFavorite: (characterId) => {
-    //   dispatch(deleteFavorite(characterId))
-    // }
+    fetchFavorites: () => {
+      dispatch(fetchFavorites())
+    },
+    addFavorite: (character, user) => {
+      dispatch(addFavorite(character, user))
+    },
+    deleteFavorite: (character, user) => {
+      dispatch(deleteFavorite(character, user))
+    }
   }
 }
 

@@ -24,8 +24,7 @@ const getMarvelCharacters = async (options) => {
 
 
   //format: http://gateway.marvel.com/v1/public/comics?ts=1&apikey=1234&hash=ffd275c5130566a2916217b101f26150
-  // let url =
-  //   `${marvelURL}characters?${pubKey}&offset=${offset}&orderBy=${sortName}name&limit=${limit}`;
+
   let url =
     `${marvelURL}characters?ts=${time}&apikey=${pubKey}&hash=${hash}&offset=${offset}&orderBy=${sortName}name&limit=${limit}`
   if (name) {
