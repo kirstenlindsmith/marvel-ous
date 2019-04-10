@@ -1,12 +1,14 @@
-import React from 'react'
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import OneCharacter from './one-character'
 import Paginator from './paginator';
 import Filters from './filters';
 import SortByName from './sortByName';
 import Loading from './loading';
 import {getMarvelCharacters} from '../../server/api/characters'
+import {me, fetchFavorites, deleteFavorite} from '../store'
 
-class AllCharacters extends React.Component {
+class AllCharacters extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -39,6 +41,10 @@ class AllCharacters extends React.Component {
   }
 
   componentDidMount() {
+    if (this.props.pageType === 'favorites'){
+      this.props.fetchFavorites()
+      this.props.getUser()
+    }
     this.search({
       name: this.state.filters.name.value,
       exactMatch: this.state.filters.name.exactMatch,
@@ -63,6 +69,7 @@ class AllCharacters extends React.Component {
       this.setState({
         loading: true
       })
+      if (this.props.pageType==='favorites'){}
       const {characters, maxPage} = await getMarvelCharacters({ offset, name, exactMatch, sortName, limit })
       this.setState({
         characters,
@@ -206,4 +213,24 @@ class AllCharacters extends React.Component {
   }
 }
 
-export default AllCharacters
+/**
+ * CONTAINER
+ */
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchFavorites() {
+      dispatch(fetchFavorites())
+    },
+    getUser() {
+      dispatch(me())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllCharacters)

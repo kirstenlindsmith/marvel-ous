@@ -1,8 +1,17 @@
+html a {
+  color: rgb(243, 102, 102);
+  cursor: pointer;
+}
 
 html a:hover {
   text-decoration: none !important;
   color: rgb(255, 158, 158);
   cursor: pointer
+}
+
+*::selection {
+  background: rgb(236, 69, 69);
+  color: white
 }
 
 .hidden {
@@ -92,7 +101,6 @@ button:after {
 .navBar {
   display: flex;
   color: rgb(243, 102, 102);
-  /* margin-top: 1% */
 }
 
 .navBar h1 {
@@ -266,6 +274,7 @@ button:after {
 
 .character:hover {
   box-shadow: 0 0 15px 5px red;
+  cursor: pointer;
 }
 
 .character-name {

@@ -8,6 +8,7 @@ import {
   Home,
   AllCharacters,
   OneCharacter,
+  Favorites,
   NoMatch
 } from './components'
 import {me} from './store'
@@ -31,15 +32,21 @@ class Routes extends Component {
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route exact path="/characters" component={AllCharacters} />
-        <Route path="/character/:characterId" component={OneCharacter} />
+        <Route
+          path="/characters"
+          render={()=> <AllCharacters pageType='allCharacters'/>}
+        />
+        {/* <Route path="/character/:characterId" component={OneCharacter} /> */}
 
         {isLoggedIn && (
           <Switch>
             {/* Below routes are only available after logging in */}
             <Route exact path="/" component={Home} />
             <Route path="/home" component={Home} />
-            {/* <Route path="/favorites" component={Favorites} /> */}
+            <Route
+              path="/favorites"
+              render={()=> <AllCharacters pageType='favorites'/>}
+            />
             <Route path="*" component={NoMatch} status={404} />
           </Switch>
         )}

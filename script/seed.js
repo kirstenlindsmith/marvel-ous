@@ -29,15 +29,23 @@ async function seed() {
     console.error('Error seeding users:', error)
   }
 
-  const createdUsers = await User.findAll()
+  const buffy = await User.findOne({
+    where: {
+      email: 'buffy@email.com'
+    }
+  })
+
+  const kirsten = await User.findOne({
+    where: {
+      email: 'kirsten@email.com'
+    }
+  })
 
   try {
-    await Promise.all(
-      createdUsers.map(user=> {
-        return Favorite.create({name: 'Spider-Man', userId: user.id})
-      })
-    )
-    console.log(`successfully seeded ${users.length} user Favorites`)
+    await Favorite.create({name: 'Spider-Girl (May Parker)', userId: buffy.id})
+    await Favorite.create({name: 'Spider-Man', userId: kirsten.id})
+
+    console.log(`successfully seeded ${users.length} Favorites`)
   } catch (error) {
     console.error('Error seeing user favorites:', error)
   }

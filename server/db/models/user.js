@@ -31,13 +31,7 @@ const User = db.define('user', {
     type: Sequelize.STRING,
     allowNull: true
   },
-},
-{
-  defaultScope: {
-    include: [{model: Favorite, as: 'Favorites'}]
-  }
-}
-)
+})
 
 module.exports = User
 

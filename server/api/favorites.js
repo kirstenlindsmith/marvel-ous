@@ -5,19 +5,13 @@ module.exports = router
 //default route is /api/favorites
 router.get('/', async (req, res, next) => {
   try {
-    const faves = await Favorite.findAll()
-
+    const userId = req.user.id
+    const faves = await Favorite.findAll({
+      where: {
+        userId
+      }
+    })
     res.json(faves)
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.get('/:userId', async (req, res, next) => {
-  try {
-    const user = await Favorite.findById(req.params.userId)
-
-    res.json(user)
   } catch (err) {
     next(err)
   }
@@ -25,43 +19,26 @@ router.get('/:userId', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const email = req.body.email
-    const password = req.body.password
-    const username = req.body.email
-
-    const newUser = await User.create({password, email, username})
-    res.json(newUser)
+    const name = req.body.name
+    const userId = req.user.id
+    const newFave = await Favorite.create({name, userId})
+    res.json(newFave)
   } catch (err) {
     next(err)
   }
 })
 
-router.put('/:userId', async (req, res, next) => {
+router.delete('/:faveName', async (req, res, next) => {
   try {
-    const user = await User.update(req.body, {
+    const userId = req.user.id
+    await Favorite.destroy({
       where: {
-        id: req.params.userId
+        name: req.params.faveName,
+        userId
       }
     })
-
-    res.json(user)
+    res.sendStatus(204)
   } catch (err) {
     next(err)
   }
 })
-
-// destroy user, order, and order items
-// router.delete('/:userId', async (req, res, next) => {
-//   try {
-//     const Order = await Order.destroy(
-//       {
-//         where: {
-//           id: req.params.userId
-//       }
-//     })
-
-//     res.json(user)
-//   } catch(err) {
-//     next(err)
-//   }
-// })
