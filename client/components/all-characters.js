@@ -5,7 +5,7 @@ import Paginator from './paginator';
 import Filters from './filters';
 import SortByName from './sortByName';
 import Loading from './loading';
-import {getMarvelCharacters} from '../../server/api/characters'
+import {getMarvelCharacters, getFavoriteCharacter} from '../../server/api/characters'
 import {me, fetchFavorites, deleteFavorite} from '../store'
 
 class AllCharacters extends Component {
@@ -40,21 +40,35 @@ class AllCharacters extends Component {
 
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.props.pageType === 'favorites'){
-      this.props.fetchFavorites()
-      this.props.getUser()
+      await this.props.fetchFavorites()
+    } else { //for the regular allCharacters view
+      this.search({
+        name: this.state.filters.name.value,
+        exactMatch: this.state.filters.name.exactMatch,
+        sortName: this.state.sortName,
+        page: this.state.page,
+        limit: this.state.limitPerPage
+      })
     }
-    this.search({
-      name: this.state.filters.name.value,
-      exactMatch: this.state.filters.name.exactMatch,
-      sortName: this.state.sortName,
-      page: this.state.page,
-      limit: this.state.limitPerPage
-    })
+  }
+  
+  componentDidUpdate(prevProps){
+    if (this.props.favorites !== prevProps.favorites){
+      console.log('update true')
+      this.search({
+        name: this.state.filters.name.value,
+        exactMatch: this.state.filters.name.exactMatch,
+        sortName: this.state.sortName,
+        page: this.state.page,
+        limit: this.state.limitPerPage
+      })
+    }
   }
 
   async search(options = {}) {
+
     const {page, name, exactMatch, sortName, limit} = Object.assign({
       page: 1,
       name: this.state.filters.name.value,
@@ -69,24 +83,81 @@ class AllCharacters extends Component {
       this.setState({
         loading: true
       })
-      if (this.props.pageType==='favorites'){}
-      const {characters, maxPage} = await getMarvelCharacters({ offset, name, exactMatch, sortName, limit })
-      this.setState({
-        characters,
-        maxPage,
-        page: characters.length ? parseInt(page) : 0, //to avoid type coercion
-        filters: {
-          name: {
-            value: name,
-            exactMatch
+      
+      if (this.props.pageType==='favorites') {
+        try {
+          await this.props.fetchFavorites()
+          let maxPage = 1;
+          // let characters = this.props.favorites.map(async faveName=> {
+          //   console.log('FAVENAME??', faveName)
+          //   return (
+          //     await getFavoriteCharacter({offset, name:faveName, exactMatch, sortName, limit:1})
+          //   )
+          // })
+          let characters = await Promise.all(
+            this.props.favorites.map(faveName=> {
+              return (
+                getFavoriteCharacter({name:faveName, exactMatch, sortName, limit:1})
+              )
+            })
+          )
+          console.log('faves in search', this.props.favorites)
+          console.log('CHARACTERS IN FAVE SEARCH', characters)
+          if (this.state.filters.name.value.length){
+            if (exactMatch){
+              // characters = characters.filter()
+            } else {
+              //filter to includes
+            }
           }
-        },
-        sortName,
-        limitPerPage: limit
-      })
-      this.setState({
-        loading: false
-      })
+          
+          this.setState({
+          characters,
+          maxPage,
+          page: characters.length ? parseInt(page) : 0, //to avoid type coercion
+          filters: {
+            name: {
+              value: name,
+              exactMatch
+            }
+          },
+          sortName,
+          limitPerPage: limit
+        })
+        this.setState({
+          loading: false
+        })
+      } catch (error) {
+        console.error('Error searching for favorites:', error)
+      }
+        
+      } else {
+
+        try {
+          const {characters, maxPage} = await getMarvelCharacters({ offset, name, exactMatch, sortName, limit })
+        
+          this.setState({
+            characters,
+            maxPage,
+            page: characters.length ? parseInt(page) : 0, //to avoid type coercion
+            filters: {
+              name: {
+                value: name,
+                exactMatch
+              }
+            },
+            sortName,
+            limitPerPage: limit
+          })
+          this.setState({
+            loading: false
+          })
+        } catch (error) {
+          console.error('Error searching Marvel characters:', error)
+        }
+        
+      }
+      
     } catch (error) {
       console.error('Search failed!', error)
       this.setState({
@@ -192,8 +263,8 @@ class AllCharacters extends Component {
 
         {!this.state.loading &&
           <div className="character-gallery">
-            {this.state.characters.map(char =>
-              <OneCharacter key={char.id} instance={char} />
+            {this.state.characters.map((char, i) =>
+              <OneCharacter key={char.id || i} instance={char} />
             )}
           </div>
         }
@@ -217,17 +288,19 @@ class AllCharacters extends Component {
  * CONTAINER
  */
 const mapStateToProps = state => {
+  // console.log('faves in mapState:', state.favorites)
   return {
-    user: state.user
+    user: state.user,
+    favorites: state.favorites,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchFavorites() {
+    fetchFavorites: () => {
       dispatch(fetchFavorites())
     },
-    getUser() {
+    getUser: () => {
       dispatch(me())
     }
   }

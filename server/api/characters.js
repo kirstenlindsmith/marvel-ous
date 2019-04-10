@@ -14,19 +14,20 @@ const getMarvelCharacters = async (options) => {
     exactMatch,
     sortName,
     limit,
-  } = Object.assign({
+  } = Object.assign({ //default values
     offset: 0,
     name: '',
     exactMatch: false,
     sortName: '',
     limit: 20,
-  }, options);
+  }, options); //override defaults with supplied options
 
 
   //format: http://gateway.marvel.com/v1/public/comics?ts=1&apikey=1234&hash=ffd275c5130566a2916217b101f26150
 
   let url =
     `${marvelURL}characters?ts=${time}&apikey=${pubKey}&hash=${hash}&offset=${offset}&orderBy=${sortName}name&limit=${limit}`
+    // console.log('URL', url)
   if (name) {
     if (exactMatch) { url += `&name=${name}`; }
     else { url += `&nameStartsWith=${name}`; }
@@ -35,7 +36,6 @@ const getMarvelCharacters = async (options) => {
   try {
     const response = await axios.get(url)
     const responseBody = response.data
-    // console.log('call response:', response)
     if (response.status === 200) {
       if (offset > responseBody.data.total) {
         throw new Error('Sorry! Page does not exist!')
@@ -58,6 +58,50 @@ const getMarvelCharacters = async (options) => {
   }
 }
 
+const getFavoriteCharacter = async (options) => {
+  const {
+    offset,
+    name,
+    exactMatch,
+    sortName,
+    limit,
+  } = Object.assign({
+    offset: 0,
+    name: '',
+    exactMatch: false,
+    sortName: '',
+    limit: 1,
+  }, options);
+
+
+  //format: http://gateway.marvel.com/v1/public/comics?ts=1&apikey=1234&hash=ffd275c5130566a2916217b101f26150
+
+  let url =
+    // `${marvelURL}characters?ts=${time}&apikey=${pubKey}&hash=${hash}`
+    `${marvelURL}characters?ts=${time}&apikey=${pubKey}&hash=${hash}&offset=${offset}&orderBy=${sortName}name&limit=${limit}`
+
+  if (name) {
+    url += `&name=${name}`
+    // if (exactMatch) { url += `&name=${name}`; }
+    // else { url += `&nameStartsWith=${name}`; }
+  }
+  // console.log('fave call url:', url)
+  try {
+    const response = await axios.get(url)
+    const responseBody = response.data
+    console.log('fave call response:', responseBody.data.results)
+    if (response.status === 200) {
+      return responseBody.data.results[0]
+    } else {
+      throw new Error(`The Marvel API sent a bad response! Status code ${response.status}`)
+    }
+  } catch (error) {
+    console.error('Error pulling favorite from Marvel db:', error)
+    return {}
+  }
+}
+
 export {
   getMarvelCharacters,
+  getFavoriteCharacter
 }

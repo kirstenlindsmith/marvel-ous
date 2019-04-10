@@ -148,7 +148,6 @@ class OneCharacter extends Component {
   }
 
   render() {
-    console.log('faves in props:', this.props.favorites)
     const {
       id,
       fullname,
@@ -187,7 +186,7 @@ class OneCharacter extends Component {
 
         <Modal
           show={this.state.displayModal}
-          onHide={this.closeModal}
+          onHide={()=>{console.log('mandatory onClick function')}}
           dialogClassName="character-modal"
           className="character-modal"
         >
@@ -257,7 +256,6 @@ class OneCharacter extends Component {
 
 const mapStateToProps = state => {
   return {
-    character: state.characters.selectedCharacter,
     user: state.user,
     favorites: state.favorites
   }
