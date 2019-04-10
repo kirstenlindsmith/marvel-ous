@@ -18,9 +18,18 @@ export const Home = (props) => {
             <source src="https://i.imgur.com/G6qr5Ek.mp4" type="video/mp4" />
           </video> */}
           <div id="landingDiv">
-            <h4 className="promotion" id="promotion">
-              Welcome {username || email}!
+          {username &&
+            <h4 className="homeTitle">
+              Welcome {username|| email}!
             </h4>
+          }
+          
+          {!username &&
+            <h4 className="homeTitle">
+              Welcome!
+            </h4>
+          }
+           
           </div>
         </div>
       </center>
