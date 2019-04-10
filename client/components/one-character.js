@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import history from '../history'
 import {Modal, Tabs, Tab} from 'react-bootstrap'
 import toastr from 'toastr'
-import {addFavorite, fetchFavorites, deleteFavorite} from '../store'
+import {me, addFavorite, fetchFavorites, deleteFavorite} from '../store'
 toastr.options = {
   closeButton: true,
   debug: false,
@@ -60,8 +60,11 @@ class OneCharacter extends Component {
     this.createTab = this.createTab.bind(this)
   }
 
-  componentDidMount() {
-    this.props.fetchFavorites()
+  async componentDidMount() {
+    await this.props.getUser()
+    if (this.props.user.id){
+      await this.props.fetchFavorites()
+    }
   }
 
   toggleModal() {
@@ -271,6 +274,9 @@ const mapDispatchToProps = dispatch => {
     },
     deleteFavorite: (character) => {
       dispatch(deleteFavorite(character))
+    },
+    getUser: () => {
+      dispatch(me())
     }
   }
 }

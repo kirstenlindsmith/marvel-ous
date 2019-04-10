@@ -41,7 +41,7 @@ class AllCharacters extends Component {
   }
 
   async componentDidMount() {
-    if (this.props.pageType === 'favorites'){
+    if (this.props.pageType === 'favorites' && !this.props.user.id){
       await this.props.fetchFavorites()
     }
      
@@ -88,7 +88,7 @@ class AllCharacters extends Component {
       const sortName = this.state.sortName
       //NOT USING THIS RN BUT IF I HAVE TIME I WANT TO ADD FILTERS ON THE FAVES
       
-      if (this.props.pageType==='favorites') {
+      if (this.props.pageType==='favorites' && !this.props.user.id) {
         try {
           await this.props.fetchFavorites()
           let maxPage = 1;
