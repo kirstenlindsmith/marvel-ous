@@ -19,7 +19,7 @@ class AllCharacters extends React.Component {
       },
       sortName: '',
       characters: [],
-      page: 0,
+      page: 1,
       maxPage: 0,
       limitPerPage: 20,
       searchIsOpen: false
@@ -47,6 +47,14 @@ class AllCharacters extends React.Component {
       limit: this.state.limitPerPage
     })
   }
+
+  // shouldComponentUpdate(){
+  //   return typeof(this.state.page)==='number' ? false : true
+  // }
+
+  // componentDidUpdate(){
+  //   this.setState({page: parseInt(this.state.page)})
+  // }
 
   turnPage = (page) => {
     if (page !== this.state.page){
@@ -83,7 +91,7 @@ class AllCharacters extends React.Component {
       this.setState({
         characters,
         maxPage,
-        page: characters.length ? page : 0,
+        page: characters.length ? parseInt(page) : 0,
         filters: {
           name: {
             value: name,
@@ -151,6 +159,7 @@ class AllCharacters extends React.Component {
   }
 
   render() {
+    console.log('page in AC:', typeof(this.state.page))
     const searchFontColor = this.state.searchIsOpen ? 'rgb(255, 158, 158)' : 'rgb(243, 102, 102)'
     const searchTextStyle = {
       color: searchFontColor

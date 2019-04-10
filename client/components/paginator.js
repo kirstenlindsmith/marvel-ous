@@ -19,18 +19,9 @@ class Paginator extends Component {
     this.setPages(this.props.page, this.props.maxPage)
   }
 
-  shouldComponentUpdate(nextProps){
-    if (this.props !== nextProps){
-      return (this.state.pages.indexOf(nextProps.page) === -1)
-    } else return false
-  }
-
-  componentDidUpdate(){
-    this.setPages(this.props.page, this.props.maxPage)
-  }
-
-  setPages(page, maxPage) {
-    const pages = []
+  async setPages(page, maxPage) {
+    if (typeof(page)!=='number') page = parseInt(page) //to avoid type coercion
+    let pages = []
     if(page > 0){
       for (let i=0; i<5; i++){ //5 is total # of page buttons shown
         const pageNum = page + i
@@ -39,7 +30,7 @@ class Paginator extends Component {
         }
       }
     }
-    this.setState({ pages })
+    await this.setState({ pages })
   }
 
   handleNumbers(event) {
@@ -66,22 +57,22 @@ class Paginator extends Component {
   }
 
   handleTurnPage(event) {
-    if(event.key === 'Enter'){
-      const page = event.target.value
-      try {
-        if(isNaN(page) || page===0 || page > this.props.maxPage){
-          throw new Error('Invalid page number.')
-        } else {
-          this.props.onChangePage(page)
-          this.input.value = ''
-        }
-      } catch (error) {
-        console.error('Error incrementing page!', error)
+    // console.log('event', event.target.value)
+    const page = event.target.value
+    try {
+      if(isNaN(page) || page===0 || page > this.props.maxPage){
+        throw new Error('Invalid page number.')
+      } else {
+        this.props.onChangePage(page)
+        this.input.value = ''
       }
+    } catch (error) {
+      console.error('Error incrementing page!', error)
     }
   }
 
   render(){
+    console.log('pages', this.state.pages)
     return (
       <div className='paginator'>
         <div className="text-center center-block paginator-goToPage">
@@ -120,7 +111,7 @@ class Paginator extends Component {
                   key={pageNumber}
                   page={pageNumber}
                   current={this.props.page}
-                  clickHandler={this.props.handleTurnPage}
+                  clickHandler={this.handleTurnPage}
                 />
               ))
             }

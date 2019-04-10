@@ -182,3 +182,8 @@ html a:hover {
 .character-gallery {
   margin-top: 10vh
 }
+
+.paginator nav {
+  margin-top: -6.5%
+}
+
