@@ -43,20 +43,19 @@ class AllCharacters extends Component {
   async componentDidMount() {
     if (this.props.pageType === 'favorites'){
       await this.props.fetchFavorites()
-    } else { //for the regular allCharacters view
-      this.search({
-        name: this.state.filters.name.value,
-        exactMatch: this.state.filters.name.exactMatch,
-        sortName: this.state.sortName,
-        page: this.state.page,
-        limit: this.state.limitPerPage
-      })
     }
+     
+    this.search({
+      name: this.state.filters.name.value,
+      exactMatch: this.state.filters.name.exactMatch,
+      sortName: this.state.sortName,
+      page: this.state.page,
+      limit: this.state.limitPerPage
+    })
   }
   
   componentDidUpdate(prevProps){
-    if (this.props.favorites !== prevProps.favorites){
-      console.log('update true')
+    if (this.props.favorites.length !== prevProps.favorites.length){
       this.search({
         name: this.state.filters.name.value,
         exactMatch: this.state.filters.name.exactMatch,
@@ -84,30 +83,28 @@ class AllCharacters extends Component {
         loading: true
       })
       
+      const filtering = !!(this.state.filters.name.value.length || this.state.sortName.length)
+      const searchName = this.state.filters.name.value
+      const sortName = this.state.sortName
+      //NOT USING THIS RN BUT IF I HAVE TIME I WANT TO ADD FILTERS ON THE FAVES
+      
       if (this.props.pageType==='favorites') {
         try {
           await this.props.fetchFavorites()
           let maxPage = 1;
-          // let characters = this.props.favorites.map(async faveName=> {
-          //   console.log('FAVENAME??', faveName)
-          //   return (
-          //     await getFavoriteCharacter({offset, name:faveName, exactMatch, sortName, limit:1})
-          //   )
-          // })
           let characters = await Promise.all(
             this.props.favorites.map(faveName=> {
               return (
-                getFavoriteCharacter({name:faveName, exactMatch, sortName, limit:1})
+                getFavoriteCharacter({name:faveName, exactMatch:true, sortName, limit:1})
               )
             })
           )
-          console.log('faves in search', this.props.favorites)
           console.log('CHARACTERS IN FAVE SEARCH', characters)
-          if (this.state.filters.name.value.length){
+          if (filtering){
             if (exactMatch){
-              // characters = characters.filter()
+              characters = characters.filter(char => char.name === searchName.toLowerCase().trim())
             } else {
-              //filter to includes
+              characters = characters.filter(char => char.name.startsWith(searchName.toLowerCase().trim()))
             }
           }
           
@@ -237,7 +234,7 @@ class AllCharacters extends Component {
 
     return (
       <div className='all-characters'>
-      <div id="mainSearchDiv" className="dropdown search">
+      {this.props.pageType!=='favorites' && <div id="mainSearchDiv" className="dropdown search">
         <span
           className='dropLink'
           onMouseOver={()=>this.toggleSearchMenu('open')}
@@ -259,7 +256,7 @@ class AllCharacters extends Component {
             onChangeLimit={this.changeTotalPerPage}
           />
         </div>
-      </div>
+      </div>}
 
         {!this.state.loading &&
           <div className="character-gallery">
@@ -271,7 +268,7 @@ class AllCharacters extends Component {
 
         {this.state.loading && <Loading />}
 
-        {!this.state.loading && <Paginator
+        {!this.state.loading && this.props.pageType!=='favorites' && <Paginator
           ref={paginator => this.paginator = paginator}
           page={this.state.page}
           maxPage={this.state.maxPage}

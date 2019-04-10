@@ -27,7 +27,7 @@ const getMarvelCharacters = async (options) => {
 
   let url =
     `${marvelURL}characters?ts=${time}&apikey=${pubKey}&hash=${hash}&offset=${offset}&orderBy=${sortName}name&limit=${limit}`
-    // console.log('URL', url)
+
   if (name) {
     if (exactMatch) { url += `&name=${name}`; }
     else { url += `&nameStartsWith=${name}`; }
@@ -77,19 +77,16 @@ const getFavoriteCharacter = async (options) => {
   //format: http://gateway.marvel.com/v1/public/comics?ts=1&apikey=1234&hash=ffd275c5130566a2916217b101f26150
 
   let url =
-    // `${marvelURL}characters?ts=${time}&apikey=${pubKey}&hash=${hash}`
     `${marvelURL}characters?ts=${time}&apikey=${pubKey}&hash=${hash}&offset=${offset}&orderBy=${sortName}name&limit=${limit}`
 
   if (name) {
-    url += `&name=${name}`
-    // if (exactMatch) { url += `&name=${name}`; }
-    // else { url += `&nameStartsWith=${name}`; }
+    if (exactMatch) { url += `&name=${name}`; }
+    else { url += `&nameStartsWith=${name}`; }
   }
-  // console.log('fave call url:', url)
+
   try {
     const response = await axios.get(url)
     const responseBody = response.data
-    console.log('fave call response:', responseBody.data.results)
     if (response.status === 200) {
       return responseBody.data.results[0]
     } else {
