@@ -1,27 +1,35 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
-export const Home = () => {
+export const Home = (props) => {
+  const email = props.email
+  let username
+  if (email){
+   username = props.email.slice(0, (props.email.indexOf('@')))
+  }
 
   return (
     <div className="landing-page">
       <br />
       <center>
         <div>
-          <img src="https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2018/plantindoor.jpg" />
+          {/* <img src="https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2018/plantindoor.jpg" /> */}
           {/* <video preload="auto" autoPlay="autoplay" loop="loop" id="img">
             <source src="https://i.imgur.com/G6qr5Ek.mp4" type="video/mp4" />
           </video> */}
           <div id="landingDiv">
-            <h4 className="promotion" id="promotion">
-              To plant a garden <br />is to believe in tomorrow.
+          {username &&
+            <h4 className="homeTitle">
+              Welcome {username|| email}!
             </h4>
-            <button type="button" className="btn">
-              <Link to="/products" className="link">
-                SHOP
-              </Link>
-            </button>
+          }
+          
+          {!username &&
+            <h4 className="homeTitle">
+              Welcome!
+            </h4>
+          }
+           
           </div>
         </div>
       </center>

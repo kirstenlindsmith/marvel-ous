@@ -2,7 +2,7 @@
 
 ## Start
 
-1. create two databases: `betterPTdemo` and `betterPTdemo-test`
+1. create two databases: `marvel-ous` and `marvel-ous-test`
 2. `npm install`
 3. `npm run start-dev`
 

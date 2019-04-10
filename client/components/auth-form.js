@@ -93,13 +93,13 @@ class AuthForm extends Component {
           <img src="https://i.imgur.com/4u1JR3R.png" />
           <div className="form-container">
             <h1>Login</h1>
-            <a href="/auth/google">
+            {/* <a href="/auth/google">
               <button type="button" className="googleOAuth">
                 <img src="https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png" />
                 {displayName} with Google
               </button>
             </a>
-            <h4>or</h4>
+            <h4>or</h4> */}
             <form onSubmit={handleSubmit} name={name}>
               <label htmlFor="email">Email</label>
               <input name="email" type="text" />
@@ -123,13 +123,13 @@ class AuthForm extends Component {
           <img src="https://i.imgur.com/EGDGlCn.png" />
           <div className="form-container">
             <h1>Sign Up</h1>
-            <a href="/auth/google">
+            {/* <a href="/auth/google">
               <button type="button" className="googleOAuth">
                 <img src="https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png" />
                 {displayName} with Google
               </button>
             </a>
-            <h4>or</h4>
+            <h4>or</h4> */}
             <form onSubmit={handleSubmit} name={name}>
               <label htmlFor="email">Email</label>
               <span className={isEmailWarningDisplayed}>

@@ -15,3 +15,4 @@ git add -f public/bundle.js public/bundle.js.map
 git commit --allow-empty -m 'Deploying'
 
 git push --force heroku temp:master
+
