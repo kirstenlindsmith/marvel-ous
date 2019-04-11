@@ -243,11 +243,15 @@ button:hover {
 
 .login button {
   margin: 10px;
-  width: 200px
+  width: 200px;
 }
 
 .login span {
   white-space: nowrap
+}
+
+#loginSubmit, #signup {
+  margin-bottom: 20px !important;
 }
 
 .googleOAuth img {
@@ -278,6 +282,7 @@ button:hover {
   margin-top: -20px;
   margin-right: -22px
 }
+
 
 .authImage {
   position: absolute;
@@ -317,7 +322,7 @@ button:hover {
 }
 
 #loginForm {
-  width: 252px
+  width: 260px
 }
 
 .login form {

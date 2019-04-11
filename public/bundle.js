@@ -912,17 +912,7 @@ function (_Component) {
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           id: "loginSubmit",
           type: "submit"
-        }, displayName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-          href: "/auth/google"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          type: "button",
-          className: "googleOAuth"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-          id: "googleLoginImg",
-          src: "https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png"
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          id: "loginWithGoogle"
-        }, displayName, " with Google"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+        }, displayName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
           to: "/signup"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           type: "button",
@@ -967,17 +957,7 @@ function (_Component) {
           id: "signup",
           type: "submit",
           disabled: !isButtonWorking
-        }, displayName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-          href: "/auth/google"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          type: "button",
-          className: "googleOAuth"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-          id: "googleSignupImg",
-          src: "https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png"
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          id: "signupWithGoogle"
-        }, displayName, " with Google"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+        }, displayName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
           to: "/login"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           type: "button",

@@ -114,12 +114,12 @@ class AuthForm extends Component {
               <label className='authLabel' htmlFor="password">Password</label>
               <input name="password" type="password" />
               <button id='loginSubmit' type="submit">{displayName}</button>
-              <a href="/auth/google">
+              {/* <a href="/auth/google">
                 <button type="button" className="googleOAuth">
                   <img id='googleLoginImg' src="https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png" />
                   <span id="loginWithGoogle">{displayName} with Google</span>
                 </button>
-              </a>
+              </a> */}
               <Link to="/signup">
                 <button type="button" id="signUpFromLogin" className="remove">
                   Sign Up
@@ -161,12 +161,12 @@ class AuthForm extends Component {
               <button className="signupButton" id="signup" type="submit" disabled={!isButtonWorking}>
                 {displayName}
               </button>
-              <a href="/auth/google">
+              {/* <a href="/auth/google">
                 <button type="button" className="googleOAuth">
                   <img id='googleSignupImg' src="https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png" />
                   <span id='signupWithGoogle'>{displayName} with Google</span>
                 </button>
-              </a>
+              </a> */}
               <Link to='/login'>
                 <button type="button" id="loginFromSignup" className="signupButton">
                   Login
