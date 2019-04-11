@@ -107,13 +107,6 @@ class AuthForm extends Component {
           <img className='authImage' id="spidey" src="/assets/spidey.png" />
           <div className="form-container" id="loginForm">
             <h1>Login</h1>
-            {/* <a href="/auth/google">
-              <button type="button" className="googleOAuth">
-                <img src="https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png" />
-                {displayName} with Google
-              </button>
-            </a>
-            <h4>or</h4> */}
             <form onSubmit={handleSubmit} name={name}>
               <label className='authLabel' htmlFor="email">Email</label>
               <input name="email" type="text" />
@@ -121,6 +114,12 @@ class AuthForm extends Component {
               <label className='authLabel' htmlFor="password">Password</label>
               <input name="password" type="password" />
               <button id='loginSubmit' type="submit">{displayName}</button>
+              <a href="/auth/google">
+                <button type="button" className="googleOAuth">
+                  <img id='googleLoginImg' src="https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png" />
+                  <span id="loginWithGoogle">{displayName} with Google</span>
+                </button>
+              </a>
               <Link to="/signup">
                 <button type="button" id="signUpFromLogin" className="remove">
                   Sign Up
@@ -136,13 +135,6 @@ class AuthForm extends Component {
         <div className="login">
           <div className="form-container">
             <h1>Sign Up</h1>
-            {/* <a href="/auth/google">
-              <button type="button" className="googleOAuth">
-                <img src="https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png" />
-                {displayName} with Google
-              </button>
-            </a>
-            <h4>or</h4> */}
             <form onSubmit={handleSubmit} name={name}>
               <label className='authLabel' htmlFor="email">Email</label>
               <span className={isEmailWarningDisplayed}>
@@ -169,8 +161,14 @@ class AuthForm extends Component {
               <button className="signupButton" id="signup" type="submit" disabled={!isButtonWorking}>
                 {displayName}
               </button>
+              <a href="/auth/google">
+                <button type="button" className="googleOAuth">
+                  <img id='googleSignupImg' src="https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png" />
+                  <span id='signupWithGoogle'>{displayName} with Google</span>
+                </button>
+              </a>
               <Link to='/login'>
-                <button type="button" className="signupButton">
+                <button type="button" id="loginFromSignup" className="signupButton">
                   Login
                 </button>
               </Link>
@@ -184,13 +182,7 @@ class AuthForm extends Component {
   }
 }
 
-/**
- * CONTAINER
- *   Note that we have two different sets of 'mapStateToProps' functions -
- *   one for Login, and one for Signup. However, they share the same 'mapDispatchToProps'
- *   function, and share the same Component. This is a good example of how we
- *   can stay DRY with interfaces that are very similar to each other!
- */
+
 const mapLoginToProps = state => {
   return {
     name: 'login',
@@ -222,9 +214,7 @@ const mapDispatchToProps = dispatch => {
 export const Login = connect(mapLoginToProps, mapDispatchToProps)(AuthForm)
 export const Signup = connect(mapSignupToProps, mapDispatchToProps)(AuthForm)
 
-/**
- * PROP TYPES
- */
+
 AuthForm.propTypes = {
   name: PropTypes.string.isRequired,
   displayName: PropTypes.string.isRequired,

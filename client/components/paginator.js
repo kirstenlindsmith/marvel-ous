@@ -10,7 +10,6 @@ class Paginator extends Component {
     }
 
     this.setPages = this.setPages.bind(this)
-    this.handleNumbers = this.handleNumbers.bind(this)
     this.handlePrevious = this.handlePrevious.bind(this)
     this.handleTurnPage = this.handleTurnPage.bind(this)
   }
@@ -31,21 +30,6 @@ class Paginator extends Component {
       }
     }
     await this.setState({ pages })
-  }
-
-  handleNumbers(event) {
-    const key = event.charCode || event.keyCode || 0
-    if (!(
-      key===8 ||
-      key===9 ||
-      key===13 ||
-      key===46 ||
-      (key >= 35 && key <= 40) ||
-      (key >= 48 && key <= 57) ||
-      (key >= 96 && key <= 105)
-    )) {
-      event.preventDefault()
-    }
   }
 
   handlePrevious() {

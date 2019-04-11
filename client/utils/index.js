@@ -1,4 +1,4 @@
-
+//Originally was for testing purposes, keeping this to see the format of the return api data
 
 export const exampleCharacter = {
   "code": 200,

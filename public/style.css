@@ -15,7 +15,7 @@ html a:hover {
 
 *::selection {
   background: rgb(236, 69, 69);
-  color: white
+  color: white !important
 }
 
 .hidden {
@@ -108,6 +108,12 @@ button:after {
   border-radius: 7px !important;
 }
 
+button:hover {
+  background-color: #e9f4ff;
+  border: 1px solid #e9f4ff;
+  box-shadow: 0 2px 4px gray
+}
+
 .loading {
   display: flex;
   justify-content: center;
@@ -137,7 +143,7 @@ button:after {
    z-index: -1;
 }
 
-#welcome h4{
+#welcome #noUserTitle h4{
   font-family: 'Open Sans', sans-serif;
   color: #555;
   text-decoration: none;
@@ -147,11 +153,42 @@ button:after {
   letter-spacing: -3px;
   text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
   position: absolute;
-  left: 33vw;
+  left: 32vw;
   top: 400px
 }
 
-#welcome p {
+#welcome #userTitle h4{
+  font-family: 'Open Sans', sans-serif;
+  color: #555;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 100px;
+  font-weight: 800;
+  letter-spacing: -3px;
+  text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
+  position: absolute;
+  left: 32vw;
+  top: 385px
+}
+
+#welcome h3{
+  font-family: 'Open Sans', sans-serif;
+  color: #555;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 50px;
+  font-weight: 800;
+  letter-spacing: -3px;
+  text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
+  /* position: absolute;
+  left: 34.5vw;
+  top: 490px; */
+  display: inline-flex;
+  align-self: center;
+  margin-top: 380px
+}
+
+#welcome #noUserTitle p {
   transform:rotate(-8deg);
   color: white;
   font: 30px American Typewriter, serif;
@@ -164,7 +201,25 @@ button:after {
   top: 530px
 }
 
-#welcome p:hover, #welcome p:focus, #welcome p:active {
+#welcome #userTitle p {
+  transform:rotate(-8deg);
+  color: white;
+  font: 30px American Typewriter, serif;
+  background: rgba(221, 75, 75, 0.7);
+  padding: 10px;
+  padding-left: 50px;
+  padding-right: 50px;
+  position: absolute;
+  left: 38vw;
+  top: 550px
+}
+
+#welcome #userTitle p:hover, #welcome #userTitle p:focus, #welcome #userTitle p:active {
+  transform: scale(1.4) rotate(4deg);
+  -webkit-transform: scale(1.4) rotate(4deg);
+}
+
+#welcome #noUserTitle p:hover, #welcome #noUserTitle p:focus, #welcome #noUserTitle p:active {
   transform: scale(1.4) rotate(4deg);
   -webkit-transform: scale(1.4) rotate(4deg);
 }
@@ -184,7 +239,40 @@ button:after {
 
 .login button {
   margin: 10px;
-  width: 175px
+  width: 200px
+}
+
+.login span {
+  white-space: nowrap
+}
+
+.googleOAuth img {
+  height: 16px;
+  margin-top: 7px;
+  margin-left: -20px;
+  -webkit-filter: drop-shadow(2px 2px 0 #222);
+  filter: drop-shadow(1px 2px 0 #222);
+  position: absolute;
+}
+
+#googleLoginImg {
+  margin-top: 4px;
+  margin-left: -25px
+}
+
+#loginWithGoogle {
+  margin-right: -20px
+}
+
+#googleSignupImg {
+  margin-top: 4px;
+  margin-left: -22px
+}
+
+#signupWithGoogle {
+  position: relative;
+  margin-top: -20px;
+  margin-right: -22px
 }
 
 .authImage {
@@ -255,16 +343,30 @@ button:after {
 }
 
 #signup {
-  align-self: center
+  align-self: center;
+  margin-bottom: 0;
 }
 
 #signUpFromLogin {
-  margin-top: 18px
+  margin: 0 auto
+}
+
+#loginFromSignup {
+  margin: 0 auto
 }
 
 #loginSubmit {
   margin: 0 auto;
   margin-top: 10px
+}
+
+.googleOAuth {
+  margin: 0 auto
+}
+
+.login a {
+  margin: 0;
+  padding: 0
 }
 
 form label {
@@ -541,7 +643,13 @@ label.form-label {
 
 .descriptionPreview {
   margin-top: 4%;
-  padding: 1% 3%
+  padding: 1% 3%;
+  background: -webkit-linear-gradient(top, #333, #eee);
+  background: -o-linear-gradient(bottom, #333, #eee);
+   background: -moz-linear-gradient(bottom, #333, #eee);
+   background: linear-gradient(to bottom, #333, #eee); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .oneCharacterButton {
@@ -552,11 +660,31 @@ label.form-label {
   width: 50%
 }
 
-.character-modal-image {
-  height: 200px;
+.character-modal {
+  font-family: 'Comic Sans MS', helvetica, sans-serif !important;
+}
+
+#mainModalBody {
+  display: flex;
+}
+
+#mainModalBody img {
+  height: 225px;
   width: 200px;
-  margin-right: 10px;
+  object-fit: cover;
+  margin-left: 15px;
   margin-bottom: 10px;
+}
+
+#mainModalBody p {
+  text-align: left;
+  padding-left: 20px;
+  padding-right: 20px;
+  line-height: 20px;
+}
+
+.addFaveButton {
+  white-space: nowrap
 }
 
 .notFound {
@@ -580,12 +708,34 @@ label.form-label {
   
 }
 
+.nothingHere {
+  text-align: center;
+  margin-top: 100px;
+}
 
+.nothingHere h3 {
+  font-family: 'Dokdo', helvetica, sans-serif;
+  font-size: 3rem;
+  background: -webkit-linear-gradient(left, #ba1f1f , #ff9393);
+   background: -o-linear-gradient(right, #ba1f1f, #ff9393);
+   background: -moz-linear-gradient(right, #ba1f1f, #ff9393);
+   background: linear-gradient(to right, #ba1f1f , #ff9393); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
+.nothingHere #searchError {
+  font-size: 5rem
+}
 
+.nothingHere img {
+  height: 200px;
+  margin-top: -30px
+}
 
-
-
+.nothingHere button {
+  margin: 20px
+}
 
 
 /* TOAST CSS */

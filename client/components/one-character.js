@@ -50,10 +50,10 @@ class OneCharacter extends Component {
           ? instance.name.slice(0, 15) + '...'
           : instance.name,
       imageUrl: `${instance.thumbnail.path}.${instance.thumbnail.extension}`,
-      description: !instance.description.length
+      description: !instance.description.length || instance.description === ' '
         ? 'This character has no description. See the resource links for more information.'
         : instance.description,
-      descriptionPreview: !instance.description.length
+      descriptionPreview: !instance.description.length || instance.description === ' '
         ? `This character has no description. Click for more info!`
         : instance.description.length > 100
           ? instance.description.slice(0, 100) + '...'
@@ -189,6 +189,10 @@ class OneCharacter extends Component {
       comicLink,
       isVisible
     } = this.state
+    
+    const finalDescription = description.includes('ï¿½') ? description.replace(/\ï¿½/g, `'`) : description
+    
+    const finalDescriptionPreview = descriptionPreview.includes('ï¿½') ? descriptionPreview.replace((/\ï¿½/g, `'`), `'`) : descriptionPreview
 
     let inFaves
 
@@ -212,7 +216,7 @@ class OneCharacter extends Component {
           onClick={this.toggleModal}
         />
         <p className="character-description descriptionPreview" onClick={this.toggleModal}>
-          {descriptionPreview}
+          {finalDescriptionPreview}
         </p>
 
         <Modal
@@ -246,9 +250,15 @@ class OneCharacter extends Component {
             </button>
           </Modal.Header>
           <Modal.Body>
-            <img src={imageUrl} alt={name} className="character-modal-image" />
+          
+            <div id="mainModalBody">
+              <div id="character-modal-image">
+                <img src={imageUrl} alt={name} />
+              </div>
+              <p>{finalDescription}</p>
+            </div>
+            
             <div className="character-modal-description">
-              <p>{description}</p>
               {detail && (
                 <a href={detail.url} className="smallButton"><button type='button'>
                     More Details

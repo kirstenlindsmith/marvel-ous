@@ -148,13 +148,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _one_character__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./one-character */ "./client/components/one-character.js");
-/* harmony import */ var _paginator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./paginator */ "./client/components/paginator.js");
-/* harmony import */ var _filters__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./filters */ "./client/components/filters.js");
-/* harmony import */ var _sortByName__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sortByName */ "./client/components/sortByName.js");
-/* harmony import */ var _loading__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./loading */ "./client/components/loading.js");
-/* harmony import */ var _server_api_characters__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../server/api/characters */ "./server/api/characters.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../store */ "./client/store/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+/* harmony import */ var _one_character__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./one-character */ "./client/components/one-character.js");
+/* harmony import */ var _paginator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./paginator */ "./client/components/paginator.js");
+/* harmony import */ var _filters__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./filters */ "./client/components/filters.js");
+/* harmony import */ var _sortByName__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./sortByName */ "./client/components/sortByName.js");
+/* harmony import */ var _loading__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./loading */ "./client/components/loading.js");
+/* harmony import */ var _server_api_characters__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../server/api/characters */ "./server/api/characters.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../store */ "./client/store/index.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -189,6 +190,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var AllCharacters =
 /*#__PURE__*/
 function (_Component) {
@@ -207,6 +209,10 @@ function (_Component) {
       var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this.state,
           page = _ref.page,
           maxPage = _ref.maxPage;
+
+      if (_this.state.searchError) _this.setState({
+        searchError: false
+      });
 
       _this.paginator.setPages(page, maxPage);
     });
@@ -245,6 +251,7 @@ function (_Component) {
 
     _this.state = {
       loading: false,
+      searchError: false,
       filters: {
         name: {
           value: '',
@@ -370,6 +377,7 @@ function (_Component) {
                 offset = page ? (page - 1) * limit : 0;
                 _context2.prev = 3;
 
+                // debugger
                 if (this.isMounted) {
                   this.setState({
                     loading: true
@@ -389,7 +397,7 @@ function (_Component) {
                 maxPage = 1;
                 _context2.next = 12;
                 return Promise.all(this.props.favorites.map(function (faveName) {
-                  return Object(_server_api_characters__WEBPACK_IMPORTED_MODULE_7__["getFavoriteCharacter"])({
+                  return Object(_server_api_characters__WEBPACK_IMPORTED_MODULE_8__["getFavoriteCharacter"])({
                     name: faveName,
                     exactMatch: true,
                     sortName: sortName,
@@ -439,7 +447,7 @@ function (_Component) {
                 }
 
                 _context2.next = 26;
-                return Object(_server_api_characters__WEBPACK_IMPORTED_MODULE_7__["getMarvelCharacters"])({
+                return Object(_server_api_characters__WEBPACK_IMPORTED_MODULE_8__["getMarvelCharacters"])({
                   offset: offset,
                   name: name,
                   exactMatch: exactMatch,
@@ -528,15 +536,19 @@ function (_Component) {
 
               case 3:
                 this.afterFilter();
-                _context3.next = 9;
+                _context3.next = 10;
                 break;
 
               case 6:
                 _context3.prev = 6;
                 _context3.t0 = _context3["catch"](0);
+                this.setState({
+                  loading: false,
+                  searchError: true
+                });
                 console.error('Filtering error!', _context3.t0);
 
-              case 9:
+              case 10:
               case "end":
                 return _context3.stop();
             }
@@ -620,6 +632,7 @@ function (_Component) {
         color: searchFontColor
       };
       var searchDropDownClass = this.state.searchIsOpen ? '' : 'hidden';
+      var searchError = this.state.searchError;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "all-characters"
       }, this.props.pageType !== 'favorites' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -639,27 +652,42 @@ function (_Component) {
         onClick: function onClick() {
           return _this3.toggleSearchMenu('close');
         }
-      }, "x"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_filters__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }, "x"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_filters__WEBPACK_IMPORTED_MODULE_5__["default"], {
         ref: function ref(filters) {
           return _this3.filters = filters;
         },
         onApply: this.filterResults,
         onReset: this.resetFilters
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sortByName__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sortByName__WEBPACK_IMPORTED_MODULE_6__["default"], {
         onChangeSort: this.sortByName,
         onChangeLimit: this.changeTotalPerPage
       }))), this.props.pageType !== 'favorites' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "pageTitle"
       }, "characters"), this.props.pageType === 'favorites' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "pageTitle"
-      }, "favorites"), !this.state.loading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "favorites"), this.props.pageType === 'favorites' && !this.state.characters.length && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "nothingHere"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "You don't have any favorites yet!"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+        to: "/characters"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        id: "charsFromFaves"
+      }, "Find Some"))), !this.state.loading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "character-gallery"
       }, this.state.characters.map(function (_char, i) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_one_character__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_one_character__WEBPACK_IMPORTED_MODULE_3__["default"], {
           key: _char.id || i,
           instance: _char
         });
-      })), this.state.loading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_loading__WEBPACK_IMPORTED_MODULE_6__["default"], null), !this.state.loading && this.props.pageType !== 'favorites' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paginator__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      })), searchError ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "nothingHere"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+        id: "searchError"
+      }, "No Results"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        src: "/assets/noResults.gif"
+      })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "hidden"
+      }), this.state.loading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_loading__WEBPACK_IMPORTED_MODULE_7__["default"], null), !this.state.loading && this.props.pageType !== 'favorites' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paginator__WEBPACK_IMPORTED_MODULE_4__["default"], {
         ref: function ref(paginator) {
           return _this3.paginator = paginator;
         },
@@ -674,10 +702,6 @@ function (_Component) {
 
   return AllCharacters;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-/**
- * CONTAINER
- */
-
 
 var mapStateToProps = function mapStateToProps(state) {
   // console.log('faves in mapState:', state.favorites)
@@ -690,10 +714,10 @@ var mapStateToProps = function mapStateToProps(state) {
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     fetchFavorites: function fetchFavorites() {
-      dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_8__["fetchFavorites"])());
+      dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_9__["fetchFavorites"])());
     },
     getUser: function getUser() {
-      dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_8__["me"])());
+      dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_9__["me"])());
     }
   };
 };
@@ -888,7 +912,17 @@ function (_Component) {
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           id: "loginSubmit",
           type: "submit"
-        }, displayName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+        }, displayName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "/auth/google"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          className: "googleOAuth"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          id: "googleLoginImg",
+          src: "https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          id: "loginWithGoogle"
+        }, displayName, " with Google"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
           to: "/signup"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           type: "button",
@@ -933,10 +967,21 @@ function (_Component) {
           id: "signup",
           type: "submit",
           disabled: !isButtonWorking
-        }, displayName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+        }, displayName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "/auth/google"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          className: "googleOAuth"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          id: "googleSignupImg",
+          src: "https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          id: "signupWithGoogle"
+        }, displayName, " with Google"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
           to: "/login"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           type: "button",
+          id: "loginFromSignup",
           className: "signupButton"
         }, "Login")), error && error.response && !this.freshpage && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           id: "error"
@@ -951,14 +996,6 @@ function (_Component) {
 
   return AuthForm;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-/**
- * CONTAINER
- *   Note that we have two different sets of 'mapStateToProps' functions -
- *   one for Login, and one for Signup. However, they share the same 'mapDispatchToProps'
- *   function, and share the same Component. This is a good example of how we
- *   can stay DRY with interfaces that are very similar to each other!
- */
-
 
 var mapLoginToProps = function mapLoginToProps(state) {
   return {
@@ -990,10 +1027,6 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
 var Login = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapLoginToProps, mapDispatchToProps)(AuthForm);
 var Signup = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapSignupToProps, mapDispatchToProps)(AuthForm);
-/**
- * PROP TYPES
- */
-
 AuthForm.propTypes = {
   name: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string.isRequired,
   displayName: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string.isRequired,
@@ -1175,6 +1208,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Home = function Home(props) {
+  var email = props.email;
+  var username;
+
+  if (email) {
+    var emailUsername = props.email.slice(0, props.email.indexOf('@'));
+    username = emailUsername.slice(0, 1).toUpperCase() + emailUsername.slice(1);
+  }
+
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "landing-page"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("center", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -1183,15 +1224,18 @@ var Home = function Home(props) {
     src: "/assets/characters.jpg"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "welcome"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
-    className: "homeTitle"
-  }, "Welcome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+  }, !username ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    id: "noUserTitle"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Welcome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
     to: "/characters"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "click here to start")))));
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "click here to start"))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    id: "userTitle"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Welcome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+    id: "homeUsername"
+  }, username), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+    to: "/characters"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "click here to start"))))));
 };
-/**
- * CONTAINER
- */
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
@@ -1387,10 +1431,6 @@ function (_Component) {
 
   return Navbar;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-/**
- * CONTAINER
- */
-
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
@@ -1411,10 +1451,6 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(Navbar));
-/**
- * PROP TYPES
- */
-
 Navbar.propTypes = {
   handleClick: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func.isRequired,
   isLoggedIn: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool.isRequired
@@ -1528,8 +1564,8 @@ function (_Component) {
       fullname: instance.name,
       name: instance.name.length > 15 ? instance.name.slice(0, 15) + '...' : instance.name,
       imageUrl: "".concat(instance.thumbnail.path, ".").concat(instance.thumbnail.extension),
-      description: !instance.description.length ? 'This character has no description. See the resource links for more information.' : instance.description,
-      descriptionPreview: !instance.description.length ? "This character has no description. Click for more info!" : instance.description.length > 100 ? instance.description.slice(0, 100) + '...' : instance.description,
+      description: !instance.description.length || instance.description === ' ' ? 'This character has no description. See the resource links for more information.' : instance.description,
+      descriptionPreview: !instance.description.length || instance.description === ' ' ? "This character has no description. Click for more info!" : instance.description.length > 100 ? instance.description.slice(0, 100) + '...' : instance.description,
       comics: instance.comics.items,
       series: instance.series.items,
       stories: instance.stories.items,
@@ -1707,6 +1743,8 @@ function (_Component) {
           wiki = _this$state.wiki,
           comicLink = _this$state.comicLink,
           isVisible = _this$state.isVisible;
+      var finalDescription = description.includes('ï¿½') ? description.replace(/\ï¿½/g, "'") : description;
+      var finalDescriptionPreview = descriptionPreview.includes('ï¿½') ? descriptionPreview.replace((/\ï¿½/g, "'"), "'") : descriptionPreview;
       var inFaves;
 
       if (this.props.favorites.includes(fullname)) {
@@ -1731,7 +1769,7 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
         className: "character-description descriptionPreview",
         onClick: this.toggleModal
-      }, descriptionPreview), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"], {
+      }, finalDescriptionPreview), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"], {
         show: this.state.displayModal,
         onHide: function onHide() {
           console.log('mandatory onClick function');
@@ -1750,13 +1788,16 @@ function (_Component) {
       }, "Remove from Favorites"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
         onClick: this.toggleModal
-      }, "x")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Body, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+      }, "x")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Body, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "mainModalBody"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "character-modal-image"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
         src: imageUrl,
-        alt: name,
-        className: "character-modal-image"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        alt: name
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, finalDescription)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "character-modal-description"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, description), detail && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+      }, detail && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         href: detail.url,
         className: "smallButton"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
@@ -1905,7 +1946,6 @@ function (_Component) {
       pages: []
     };
     _this.setPages = _this.setPages.bind(_assertThisInitialized(_this));
-    _this.handleNumbers = _this.handleNumbers.bind(_assertThisInitialized(_this));
     _this.handlePrevious = _this.handlePrevious.bind(_assertThisInitialized(_this));
     _this.handleTurnPage = _this.handleTurnPage.bind(_assertThisInitialized(_this));
     return _this;
@@ -1961,15 +2001,6 @@ function (_Component) {
 
       return setPages;
     }()
-  }, {
-    key: "handleNumbers",
-    value: function handleNumbers(event) {
-      var key = event.charCode || event.keyCode || 0;
-
-      if (!(key === 8 || key === 9 || key === 13 || key === 46 || key >= 35 && key <= 40 || key >= 48 && key <= 57 || key >= 96 && key <= 105)) {
-        event.preventDefault();
-      }
-    }
   }, {
     key: "handlePrevious",
     value: function handlePrevious() {
@@ -2214,15 +2245,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _history__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./history */ "./client/history.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./store */ "./client/store/index.js");
 /* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./app */ "./client/app.js");
-/* harmony import */ var _socket__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./socket */ "./client/socket.js");
-/* harmony import */ var _socket__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_socket__WEBPACK_IMPORTED_MODULE_7__);
 
 
 
 
 
-
- // establish socket connection
 
 
 react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_2__["Provider"], {
@@ -2274,9 +2301,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-/**
- * COMPONENT
- */
 
 var Routes =
 /*#__PURE__*/
@@ -2348,15 +2372,9 @@ function (_Component) {
 
   return Routes;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-/**
- * CONTAINER
- */
-
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
-    // Otherwise, state.user will be an empty object, and state.user.id will be falsey
     isLoggedIn: !!state.user.id
   };
 };
@@ -2367,29 +2385,13 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
       dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_5__["me"])());
     }
   };
-}; // The `withRouter` wrapper makes sure that updates are not blocked when the url changes
-
+};
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["withRouter"])(Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(Routes)));
-/**
- * PROP TYPES
- */
-
 Routes.propTypes = {
   loadInitialData: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.func.isRequired,
   isLoggedIn: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.bool.isRequired
 };
-
-/***/ }),
-
-/***/ "./client/socket.js":
-/*!**************************!*\
-  !*** ./client/socket.js ***!
-  \**************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
 
 /***/ }),
 
@@ -79701,6 +79703,9 @@ module.exports = function(originalModule) {
 
 /* WEBPACK VAR INJECTION */(function(process) {process.env.MARVEL_PUB_KEY = '844835b8ba80bbf13ec04cc6cc49c299';
 process.env.MARVEL_API_KEY = 'a8c1f4c64658ef3f758f89ff911434ef17821286';
+process.env.GOOGLE_CLIENT_ID = '711896344541-e946uj56t3h19s1jhduast63lfunb1rm.apps.googleusercontent.com';
+process.env.GOOGLE_CLIENT_SECRET = 'xMGrZw9srTsX0TZ3pM2GMW6o';
+process.env.GOOGLE_CALLBACK = '/auth/google/callback';
 module.exports = {
   'MarvelPubKey': '844835b8ba80bbf13ec04cc6cc49c299',
   'MarvelAPIKey': 'a8c1f4c64658ef3f758f89ff911434ef17821286'
@@ -79848,7 +79853,7 @@ function () {
               exactMatch: false,
               sortName: '',
               limit: 1
-            }, options), offset = _Object$assign2.offset, name = _Object$assign2.name, exactMatch = _Object$assign2.exactMatch, sortName = _Object$assign2.sortName, limit = _Object$assign2.limit; //format: http://gateway.marvel.com/v1/public/comics?ts=1&apikey=1234&hash=ffd275c5130566a2916217b101f26150
+            }, options), offset = _Object$assign2.offset, name = _Object$assign2.name, exactMatch = _Object$assign2.exactMatch, sortName = _Object$assign2.sortName, limit = _Object$assign2.limit; //format: http://gateway.marvel.com/v1/public/comics?ts=TIMESTAMP&apikey=MARVELPUBLICKEY&hash=GENHASH
 
             url = "".concat(marvelURL, "characters?ts=").concat(time, "&apikey=").concat(pubKey, "&hash=").concat(hash, "&offset=").concat(offset, "&orderBy=").concat(sortName, "name&limit=").concat(limit);
 

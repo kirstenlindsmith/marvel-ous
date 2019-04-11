@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import OneCharacter from './one-character'
 import Paginator from './paginator';
 import Filters from './filters';
@@ -15,6 +16,7 @@ class AllCharacters extends Component {
     super(props)
     this.state = {
       loading: false,
+      searchError: false,
       filters: {
         name: {
           value: '',
@@ -87,7 +89,7 @@ class AllCharacters extends Component {
     const offset = page ? (page -1) * limit : 0
     
     try {
-      
+      // debugger
       if (this.isMounted) {
         this.setState({
           loading: true
@@ -174,6 +176,10 @@ class AllCharacters extends Component {
       })
       this.afterFilter()
     } catch (error) {
+      this.setState({
+        loading: false,
+        searchError: true
+      })
       console.error('Filtering error!', error)
     }
   }
@@ -188,6 +194,7 @@ class AllCharacters extends Component {
   }
 
   afterFilter = ({page, maxPage}=this.state) => {
+    if (this.state.searchError) this.setState({searchError: false})
     this.paginator.setPages(page, maxPage)
   }
 
@@ -234,11 +241,13 @@ class AllCharacters extends Component {
       color: searchFontColor
     }
     const searchDropDownClass = this.state.searchIsOpen ? '' : 'hidden'
+    const {searchError} = this.state
 
     return (
       <div className='all-characters'>
         
-      {this.props.pageType!=='favorites' && <div id="mainSearchDiv" className="dropdown search">
+      {this.props.pageType!=='favorites' &&
+      <div id="mainSearchDiv" className="dropdown search">
         <span
           className='dropLink'
           onMouseOver={()=>this.toggleSearchMenu('open')}
@@ -269,6 +278,15 @@ class AllCharacters extends Component {
           <div className='pageTitle'>favorites</div>
         }
 
+        {this.props.pageType==='favorites' && !this.state.characters.length && 
+          <div className='nothingHere'>
+            <h3>You don't have any favorites yet!</h3>
+            <Link to='/characters'>
+              <button type="button" id="charsFromFaves">Find Some</button>
+            </Link>
+          </div>
+        }
+
         {!this.state.loading &&
           <div className="character-gallery">
             {this.state.characters.map((char, i) =>
@@ -276,6 +294,13 @@ class AllCharacters extends Component {
             )}
           </div>
         }
+        
+        {searchError ? (
+          <div className='nothingHere'>
+            <h3 id="searchError">No Results</h3>
+            <img src="/assets/noResults.gif"/>
+          </div>
+        ) : <div className='hidden'/>}
 
         {this.state.loading && <Loading />}
 
@@ -292,9 +317,7 @@ class AllCharacters extends Component {
   }
 }
 
-/**
- * CONTAINER
- */
+
 const mapStateToProps = state => {
   // console.log('faves in mapState:', state.favorites)
   return {
