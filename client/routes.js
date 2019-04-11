@@ -30,10 +30,10 @@ class Routes extends Component {
 
 
         <Route exact path="/" component={Home} />
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/signup" component={Signup} />
         <Route
-          path="/characters"
+          exact path="/characters"
           render={()=> <AllCharacters pageType='allCharacters'/>}
         />
         {/* <Route path="/character/:characterId" component={OneCharacter} /> */}
@@ -42,9 +42,9 @@ class Routes extends Component {
           <Switch>
             {/* Below routes are only available after logging in */}
             <Route exact path="/" component={Home} />
-            <Route path="/home" component={Home} />
+            <Route exact path="/home" component={Home} />
             <Route
-              path="/favorites"
+              exact path="/favorites"
               render={()=> <AllCharacters pageType='favorites'/>}
             />
             <Route path="*" component={NoMatch} status={404} />
