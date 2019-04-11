@@ -1,11 +1,12 @@
 set -e
 
 function cleanup_at_exit {
-  git branch -D temp
+  git checkout master
+  git branch -D tempDeploy
 }
 trap cleanup_at_exit EXIT
 
-git checkout -b temp
+git checkout -b tempDeploy
 
 webpack -p
 
@@ -13,5 +14,5 @@ git add -f public/bundle.js public/bundle.js.map
 
 git commit --allow-empty -m 'Deploying'
 
-git push --force heroku temp:master
+git push --force heroku tempDeploy:master
 
