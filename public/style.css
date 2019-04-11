@@ -644,7 +644,10 @@ label.form-label {
 .descriptionPreview {
   margin-top: 4%;
   padding: 1% 3%;
-  background: -webkit-linear-gradient(#333, #eee);
+  background: -webkit-linear-gradient(top, #333, #eee);
+  background: -o-linear-gradient(bottom, #333, #eee);
+   background: -moz-linear-gradient(bottom, #333, #eee);
+   background: linear-gradient(to bottom, #333, #eee); 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -678,9 +681,6 @@ label.form-label {
   padding-left: 20px;
   padding-right: 20px;
   line-height: 20px;
-  /* background: -webkit-linear-gradient(top, red 0%, black 20%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; */
 }
 
 .addFaveButton {
@@ -708,9 +708,34 @@ label.form-label {
   
 }
 
+.nothingHere {
+  text-align: center;
+  margin-top: 100px;
+}
 
+.nothingHere h3 {
+  font-family: 'Dokdo', helvetica, sans-serif;
+  font-size: 3rem;
+  background: -webkit-linear-gradient(left, #ba1f1f , #ff9393);
+   background: -o-linear-gradient(right, #ba1f1f, #ff9393);
+   background: -moz-linear-gradient(right, #ba1f1f, #ff9393);
+   background: linear-gradient(to right, #ba1f1f , #ff9393); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
+.nothingHere #searchError {
+  font-size: 5rem
+}
 
+.nothingHere img {
+  height: 200px;
+  margin-top: -30px
+}
+
+.nothingHere button {
+  margin: 20px
+}
 
 
 /* TOAST CSS */

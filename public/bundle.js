@@ -148,13 +148,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _one_character__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./one-character */ "./client/components/one-character.js");
-/* harmony import */ var _paginator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./paginator */ "./client/components/paginator.js");
-/* harmony import */ var _filters__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./filters */ "./client/components/filters.js");
-/* harmony import */ var _sortByName__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sortByName */ "./client/components/sortByName.js");
-/* harmony import */ var _loading__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./loading */ "./client/components/loading.js");
-/* harmony import */ var _server_api_characters__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../server/api/characters */ "./server/api/characters.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../store */ "./client/store/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+/* harmony import */ var _one_character__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./one-character */ "./client/components/one-character.js");
+/* harmony import */ var _paginator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./paginator */ "./client/components/paginator.js");
+/* harmony import */ var _filters__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./filters */ "./client/components/filters.js");
+/* harmony import */ var _sortByName__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./sortByName */ "./client/components/sortByName.js");
+/* harmony import */ var _loading__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./loading */ "./client/components/loading.js");
+/* harmony import */ var _server_api_characters__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../server/api/characters */ "./server/api/characters.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../store */ "./client/store/index.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -189,6 +190,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var AllCharacters =
 /*#__PURE__*/
 function (_Component) {
@@ -207,6 +209,10 @@ function (_Component) {
       var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this.state,
           page = _ref.page,
           maxPage = _ref.maxPage;
+
+      if (_this.state.searchError) _this.setState({
+        searchError: false
+      });
 
       _this.paginator.setPages(page, maxPage);
     });
@@ -245,6 +251,7 @@ function (_Component) {
 
     _this.state = {
       loading: false,
+      searchError: false,
       filters: {
         name: {
           value: '',
@@ -370,6 +377,7 @@ function (_Component) {
                 offset = page ? (page - 1) * limit : 0;
                 _context2.prev = 3;
 
+                // debugger
                 if (this.isMounted) {
                   this.setState({
                     loading: true
@@ -389,7 +397,7 @@ function (_Component) {
                 maxPage = 1;
                 _context2.next = 12;
                 return Promise.all(this.props.favorites.map(function (faveName) {
-                  return Object(_server_api_characters__WEBPACK_IMPORTED_MODULE_7__["getFavoriteCharacter"])({
+                  return Object(_server_api_characters__WEBPACK_IMPORTED_MODULE_8__["getFavoriteCharacter"])({
                     name: faveName,
                     exactMatch: true,
                     sortName: sortName,
@@ -439,7 +447,7 @@ function (_Component) {
                 }
 
                 _context2.next = 26;
-                return Object(_server_api_characters__WEBPACK_IMPORTED_MODULE_7__["getMarvelCharacters"])({
+                return Object(_server_api_characters__WEBPACK_IMPORTED_MODULE_8__["getMarvelCharacters"])({
                   offset: offset,
                   name: name,
                   exactMatch: exactMatch,
@@ -528,15 +536,19 @@ function (_Component) {
 
               case 3:
                 this.afterFilter();
-                _context3.next = 9;
+                _context3.next = 10;
                 break;
 
               case 6:
                 _context3.prev = 6;
                 _context3.t0 = _context3["catch"](0);
+                this.setState({
+                  loading: false,
+                  searchError: true
+                });
                 console.error('Filtering error!', _context3.t0);
 
-              case 9:
+              case 10:
               case "end":
                 return _context3.stop();
             }
@@ -620,6 +632,7 @@ function (_Component) {
         color: searchFontColor
       };
       var searchDropDownClass = this.state.searchIsOpen ? '' : 'hidden';
+      var searchError = this.state.searchError;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "all-characters"
       }, this.props.pageType !== 'favorites' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -639,27 +652,42 @@ function (_Component) {
         onClick: function onClick() {
           return _this3.toggleSearchMenu('close');
         }
-      }, "x"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_filters__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }, "x"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_filters__WEBPACK_IMPORTED_MODULE_5__["default"], {
         ref: function ref(filters) {
           return _this3.filters = filters;
         },
         onApply: this.filterResults,
         onReset: this.resetFilters
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sortByName__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sortByName__WEBPACK_IMPORTED_MODULE_6__["default"], {
         onChangeSort: this.sortByName,
         onChangeLimit: this.changeTotalPerPage
       }))), this.props.pageType !== 'favorites' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "pageTitle"
       }, "characters"), this.props.pageType === 'favorites' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "pageTitle"
-      }, "favorites"), !this.state.loading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "favorites"), this.props.pageType === 'favorites' && !this.state.characters.length && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "nothingHere"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "You don't have any favorites yet!"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+        to: "/characters"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        id: "charsFromFaves"
+      }, "Find Some"))), !this.state.loading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "character-gallery"
       }, this.state.characters.map(function (_char, i) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_one_character__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_one_character__WEBPACK_IMPORTED_MODULE_3__["default"], {
           key: _char.id || i,
           instance: _char
         });
-      })), this.state.loading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_loading__WEBPACK_IMPORTED_MODULE_6__["default"], null), !this.state.loading && this.props.pageType !== 'favorites' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paginator__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      })), searchError ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "nothingHere"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+        id: "searchError"
+      }, "No Results"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        src: "/assets/noResults.gif"
+      })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "hidden"
+      }), this.state.loading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_loading__WEBPACK_IMPORTED_MODULE_7__["default"], null), !this.state.loading && this.props.pageType !== 'favorites' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paginator__WEBPACK_IMPORTED_MODULE_4__["default"], {
         ref: function ref(paginator) {
           return _this3.paginator = paginator;
         },
@@ -686,10 +714,10 @@ var mapStateToProps = function mapStateToProps(state) {
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     fetchFavorites: function fetchFavorites() {
-      dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_8__["fetchFavorites"])());
+      dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_9__["fetchFavorites"])());
     },
     getUser: function getUser() {
-      dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_8__["me"])());
+      dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_9__["me"])());
     }
   };
 };
