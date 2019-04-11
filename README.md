@@ -1,4 +1,4 @@
-# Marvel Demo
+# Marvel API Demo
 
 _marvel-ous.herokuapp.com_
 
