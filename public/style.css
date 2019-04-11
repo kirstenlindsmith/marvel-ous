@@ -221,6 +221,7 @@ button:hover {
 #welcome #userTitle p:hover, #welcome #userTitle p:focus, #welcome #userTitle p:active {
   transform: scale(1.4) rotate(4deg);
   -webkit-transform: scale(1.4) rotate(4deg);
+  cursor: pointer;
 }
 
 #welcome #noUserTitle p:hover, #welcome #noUserTitle p:focus, #welcome #noUserTitle p:active {
