@@ -1,37 +1,30 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 
 export const Home = (props) => {
-  const email = props.email
-  let username
-  if (email){
-   username = props.email.slice(0, (props.email.indexOf('@')))
-  }
 
   return (
     <div className="landing-page">
       <br />
       <center>
-        <div>
-          {/* <img src="https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2018/plantindoor.jpg" /> */}
-          {/* <video preload="auto" autoPlay="autoplay" loop="loop" id="img">
-            <source src="https://i.imgur.com/G6qr5Ek.mp4" type="video/mp4" />
-          </video> */}
-          <div id="landingDiv">
-          {username &&
+        <div id="graphic">
+          <img src="/assets/characters.jpg"/>
+          {/* <video muted preload="auto" autoPlay="autoplay" loop="loop" id="img">
+            <source src="/assets/marvel.mp4" type="video/mp4" />
+          </video> */} 
+          {/* the video is a little too obnoxious maybe... */}
+        </div>  
+        
+          <div id='welcome'>
             <h4 className="homeTitle">
-              Welcome {username|| email}!
+              Welcome
             </h4>
-          }
-          
-          {!username &&
-            <h4 className="homeTitle">
-              Welcome!
-            </h4>
-          }
-           
+            
+            <Link to='/characters'><p>click here to start</p></Link>
           </div>
-        </div>
+          
+           
       </center>
     </div>
   )

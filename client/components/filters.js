@@ -55,7 +55,7 @@ class Filters extends Component {
           <div className='filterParent'>
             <div className='filterDiv'>
               <FormGroup controlid="filterByName" id='filterByName'>
-                <FormLabel>Search by Character Name</FormLabel>
+                <FormLabel id="searchTitle">Search by Character Name</FormLabel>
                 <FormControl
                   type='text'
                   value={this.state.name}
@@ -63,12 +63,12 @@ class Filters extends Component {
                 />
                 {!this.state.exactMatch &&
                   <div id="helpBlock">
-                    Currently matching to the start of the input<br/>(e.g., 'spid')
+                    Currently matching to the start of the input (e.g., 'spid')
                   </div>
                 }
                 {this.state.exactMatch &&
                   <div id="helpBlock">
-                    Currently matching to the exact input<br/>(e.g., 'spider-man')
+                    Currently matching to the exact input (e.g., 'spider-man')
                   </div>
                 }
               </FormGroup>
@@ -77,7 +77,7 @@ class Filters extends Component {
                   <InputGroup.Checkbox
                     checked={this.state.exactMatch}
                     onChange={this.handleExactMatchChange}
-                  /> <span id='checkboxInstructions'>Search by Exact Match</span>
+                  /> <span id='checkboxInstructions'>Search by exact match</span>
                 </InputGroup.Prepend>
               </InputGroup>
             </div>

@@ -5,6 +5,8 @@ import PropTypes from 'prop-types'
 import {auth} from '../store'
 
 class AuthForm extends Component {
+  freshpage = false
+  
   constructor() {
     super()
     this.state = {
@@ -21,6 +23,18 @@ class AuthForm extends Component {
     this.shouldTheFieldMarkError = this.shouldTheFieldMarkError.bind(this)
     this.handleBlurWhenInteracting = this.handleBlurWhenInteracting.bind(this)
     this.variablesForRender = this.variablesForRender.bind(this)
+  }
+  
+  componentDidMount(){
+    this.freshpage = true
+  }
+  
+  shouldComponentUpdate(nextProps){
+    return !!(this.props.displayName !== nextProps.displayname)
+  }
+  
+  componentWillUnmount(){
+    this.freshpage = false
   }
 
   handleFieldChange(event) {
@@ -90,8 +104,8 @@ class AuthForm extends Component {
     if (displayName === 'Login') {
       return (
         <div className="login">
-          <img src="https://i.imgur.com/4u1JR3R.png" />
-          <div className="form-container">
+          <img className='authImage' id="spidey" src="/assets/spidey.png" />
+          <div className="form-container" id="loginForm">
             <h1>Login</h1>
             {/* <a href="/auth/google">
               <button type="button" className="googleOAuth">
@@ -101,26 +115,25 @@ class AuthForm extends Component {
             </a>
             <h4>or</h4> */}
             <form onSubmit={handleSubmit} name={name}>
-              <label htmlFor="email">Email</label>
+              <label className='authLabel' htmlFor="email">Email</label>
               <input name="email" type="text" />
 
-              <label htmlFor="password">Password</label>
+              <label className='authLabel' htmlFor="password">Password</label>
               <input name="password" type="password" />
-              <button type="submit">{displayName}</button>
+              <button id='loginSubmit' type="submit">{displayName}</button>
               <Link to="/signup">
-                <button type="button" className="remove">
-                  Click Here to Sign Up
+                <button type="button" id="signUpFromLogin" className="remove">
+                  Sign Up
                 </button>
               </Link>
-              {error && error.response && <div> {error.response.data} </div>}
+              {error && error.response && !this.freshpage && <div id="error"> {error.response.data} </div>}
             </form>
           </div>
         </div>
       )
-    } else {
+    } else { //signup
       return (
         <div className="login">
-          <img src="https://i.imgur.com/EGDGlCn.png" />
           <div className="form-container">
             <h1>Sign Up</h1>
             {/* <a href="/auth/google">
@@ -131,7 +144,7 @@ class AuthForm extends Component {
             </a>
             <h4>or</h4> */}
             <form onSubmit={handleSubmit} name={name}>
-              <label htmlFor="email">Email</label>
+              <label className='authLabel' htmlFor="email">Email</label>
               <span className={isEmailWarningDisplayed}>
                 Must be a valid email address
               </span>
@@ -142,7 +155,7 @@ class AuthForm extends Component {
                 className={errorDisplay('email') ? 'fieldError' : ''}
                 onBlur={this.handleBlurWhenInteracting('email')}
               />
-              <label htmlFor="password">Password</label>
+              <label className='authLabel' htmlFor="password">Password</label>
               <span className={isPasswordWarningDisplayed}>
                 Password required<br />
               </span>
@@ -153,12 +166,18 @@ class AuthForm extends Component {
                 className={errorDisplay('password') ? 'fieldError' : ''}
                 onBlur={this.handleBlurWhenInteracting('password')}
               />
-              <button type="submit" disabled={!isButtonWorking}>
+              <button className="signupButton" id="signup" type="submit" disabled={!isButtonWorking}>
                 {displayName}
               </button>
-              {error && error.response && <div> {error.response.data} </div>}
+              <Link to='/login'>
+                <button type="button" className="signupButton">
+                  Login
+                </button>
+              </Link>
+              {error && error.response && !this.freshpage && <div id="error"> {error.response.data} </div>}
             </form>
           </div>
+          <img className='authImage' id="peter" src="/assets/peter.png" />
         </div>
       )
     }
