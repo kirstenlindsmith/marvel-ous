@@ -1,7 +1,7 @@
-const MarvelKeys = require('../../secrets')
+const AuthKeys = require('../../secrets')
 const marvelURL = 'https://gateway.marvel.com/v1/public/'
-const apiKey = MarvelKeys.MarvelAPIKey
-const pubKey = MarvelKeys.MarvelPubKey
+const apiKey = AuthKeys.MarvelAPIKey
+const pubKey = AuthKeys.MarvelPubKey
 import axios from 'axios'
 import md5 from 'md5'
 const time = (new Date()).getTime()

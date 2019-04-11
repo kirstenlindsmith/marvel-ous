@@ -79688,10 +79688,13 @@ module.exports = function(originalModule) {
 process.env.MARVEL_API_KEY = 'a8c1f4c64658ef3f758f89ff911434ef17821286';
 process.env.GOOGLE_CLIENT_ID = '711896344541-e946uj56t3h19s1jhduast63lfunb1rm.apps.googleusercontent.com';
 process.env.GOOGLE_CLIENT_SECRET = 'xMGrZw9srTsX0TZ3pM2GMW6o';
-process.env.GOOGLE_CALLBACK = '/auth/google/callback';
+NODE_ENV = 'production' ? process.env.GOOGLE_CALLBACK = 'https://marvel-ous.herokuapp.com/auth/google/callback' : undefined;
+var GoogleCallback;
+NODE_ENV = 'production' ? GoogleCallback = 'https://marvel-ous.herokuapp.com/auth/google/callback' : undefined;
 module.exports = {
   'MarvelPubKey': '844835b8ba80bbf13ec04cc6cc49c299',
-  'MarvelAPIKey': 'a8c1f4c64658ef3f758f89ff911434ef17821286'
+  'MarvelAPIKey': 'a8c1f4c64658ef3f758f89ff911434ef17821286',
+  'GoogleCallback': GoogleCallback
 };
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/process/browser.js */ "./node_modules/process/browser.js")))
 
@@ -79716,11 +79719,11 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var MarvelKeys = __webpack_require__(/*! ../../secrets */ "./secrets.js");
+var AuthKeys = __webpack_require__(/*! ../../secrets */ "./secrets.js");
 
 var marvelURL = 'https://gateway.marvel.com/v1/public/';
-var apiKey = MarvelKeys.MarvelAPIKey;
-var pubKey = MarvelKeys.MarvelPubKey;
+var apiKey = AuthKeys.MarvelAPIKey;
+var pubKey = AuthKeys.MarvelPubKey;
 
 
 var time = new Date().getTime();
