@@ -389,7 +389,7 @@ form label {
   font-weight: bold;
   position: absolute;
   margin-left: calc(100vw - 22rem);
-  margin-top: -2.22rem
+  margin-top: -2.23rem
 }
 
 .searchDropdown {
@@ -559,7 +559,26 @@ label.form-label {
   margin-bottom: 10px;
 }
 
+.notFound {
+  display: flex;
+  flex-direction: column;
+  justify-content: center
+}
 
+.notFound img {
+  height: 500px;
+  align-self: center;
+  margin-top: 30px;
+}
+
+.notFound h3 {
+  text-align: center;
+  font-family: "Comic Sans MS", helvetica, sans-serif;
+  position: absolute;
+  margin-top: 12vh;
+  margin-left: 53vw;
+  
+}
 
 
 
