@@ -968,14 +968,6 @@ function (_Component) {
 
   return AuthForm;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-/**
- * CONTAINER
- *   Note that we have two different sets of 'mapStateToProps' functions -
- *   one for Login, and one for Signup. However, they share the same 'mapDispatchToProps'
- *   function, and share the same Component. This is a good example of how we
- *   can stay DRY with interfaces that are very similar to each other!
- */
-
 
 var mapLoginToProps = function mapLoginToProps(state) {
   return {
@@ -1007,10 +999,6 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
 var Login = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapLoginToProps, mapDispatchToProps)(AuthForm);
 var Signup = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapSignupToProps, mapDispatchToProps)(AuthForm);
-/**
- * PROP TYPES
- */
-
 AuthForm.propTypes = {
   name: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string.isRequired,
   displayName: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string.isRequired,
@@ -1208,11 +1196,11 @@ var Home = function Home(props) {
     src: "/assets/characters.jpg"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "welcome"
-  }, !username && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, !username ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "noUserTitle"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Welcome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
     to: "/characters"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "click here to start"))), username && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "click here to start"))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "userTitle"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Welcome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
     id: "homeUsername"
@@ -1415,10 +1403,6 @@ function (_Component) {
 
   return Navbar;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-/**
- * CONTAINER
- */
-
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
@@ -1439,10 +1423,6 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(Navbar));
-/**
- * PROP TYPES
- */
-
 Navbar.propTypes = {
   handleClick: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func.isRequired,
   isLoggedIn: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool.isRequired
@@ -1556,8 +1536,8 @@ function (_Component) {
       fullname: instance.name,
       name: instance.name.length > 15 ? instance.name.slice(0, 15) + '...' : instance.name,
       imageUrl: "".concat(instance.thumbnail.path, ".").concat(instance.thumbnail.extension),
-      description: !instance.description.length ? 'This character has no description. See the resource links for more information.' : instance.description,
-      descriptionPreview: !instance.description.length ? "This character has no description. Click for more info!" : instance.description.length > 100 ? instance.description.slice(0, 100) + '...' : instance.description,
+      description: !instance.description.length || instance.description === ' ' ? 'This character has no description. See the resource links for more information.' : instance.description,
+      descriptionPreview: !instance.description.length || instance.description === ' ' ? "This character has no description. Click for more info!" : instance.description.length > 100 ? instance.description.slice(0, 100) + '...' : instance.description,
       comics: instance.comics.items,
       series: instance.series.items,
       stories: instance.stories.items,
@@ -1735,6 +1715,8 @@ function (_Component) {
           wiki = _this$state.wiki,
           comicLink = _this$state.comicLink,
           isVisible = _this$state.isVisible;
+      var finalDescription = description.includes('ï¿½') ? description.replace(/\ï¿½/g, "'") : description;
+      var finalDescriptionPreview = descriptionPreview.includes('ï¿½') ? descriptionPreview.replace((/\ï¿½/g, "'"), "'") : descriptionPreview;
       var inFaves;
 
       if (this.props.favorites.includes(fullname)) {
@@ -1759,7 +1741,7 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
         className: "character-description descriptionPreview",
         onClick: this.toggleModal
-      }, descriptionPreview), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"], {
+      }, finalDescriptionPreview), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"], {
         show: this.state.displayModal,
         onHide: function onHide() {
           console.log('mandatory onClick function');
@@ -1778,13 +1760,16 @@ function (_Component) {
       }, "Remove from Favorites"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
         onClick: this.toggleModal
-      }, "x")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Body, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+      }, "x")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Body, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "mainModalBody"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "character-modal-image"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
         src: imageUrl,
-        alt: name,
-        className: "character-modal-image"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        alt: name
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, finalDescription)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "character-modal-description"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, description), detail && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+      }, detail && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         href: detail.url,
         className: "smallButton"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
@@ -1933,7 +1918,6 @@ function (_Component) {
       pages: []
     };
     _this.setPages = _this.setPages.bind(_assertThisInitialized(_this));
-    _this.handleNumbers = _this.handleNumbers.bind(_assertThisInitialized(_this));
     _this.handlePrevious = _this.handlePrevious.bind(_assertThisInitialized(_this));
     _this.handleTurnPage = _this.handleTurnPage.bind(_assertThisInitialized(_this));
     return _this;
@@ -1989,15 +1973,6 @@ function (_Component) {
 
       return setPages;
     }()
-  }, {
-    key: "handleNumbers",
-    value: function handleNumbers(event) {
-      var key = event.charCode || event.keyCode || 0;
-
-      if (!(key === 8 || key === 9 || key === 13 || key === 46 || key >= 35 && key <= 40 || key >= 48 && key <= 57 || key >= 96 && key <= 105)) {
-        event.preventDefault();
-      }
-    }
   }, {
     key: "handlePrevious",
     value: function handlePrevious() {
@@ -2242,15 +2217,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _history__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./history */ "./client/history.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./store */ "./client/store/index.js");
 /* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./app */ "./client/app.js");
-/* harmony import */ var _socket__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./socket */ "./client/socket.js");
-/* harmony import */ var _socket__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_socket__WEBPACK_IMPORTED_MODULE_7__);
 
 
 
 
 
-
- // establish socket connection
 
 
 react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_2__["Provider"], {
@@ -2376,15 +2347,9 @@ function (_Component) {
 
   return Routes;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-/**
- * CONTAINER
- */
-
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
-    // Otherwise, state.user will be an empty object, and state.user.id will be falsey
     isLoggedIn: !!state.user.id
   };
 };
@@ -2395,29 +2360,13 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
       dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_5__["me"])());
     }
   };
-}; // The `withRouter` wrapper makes sure that updates are not blocked when the url changes
-
+};
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["withRouter"])(Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(Routes)));
-/**
- * PROP TYPES
- */
-
 Routes.propTypes = {
   loadInitialData: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.func.isRequired,
   isLoggedIn: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.bool.isRequired
 };
-
-/***/ }),
-
-/***/ "./client/socket.js":
-/*!**************************!*\
-  !*** ./client/socket.js ***!
-  \**************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
 
 /***/ }),
 
@@ -79879,7 +79828,7 @@ function () {
               exactMatch: false,
               sortName: '',
               limit: 1
-            }, options), offset = _Object$assign2.offset, name = _Object$assign2.name, exactMatch = _Object$assign2.exactMatch, sortName = _Object$assign2.sortName, limit = _Object$assign2.limit; //format: http://gateway.marvel.com/v1/public/comics?ts=1&apikey=1234&hash=ffd275c5130566a2916217b101f26150
+            }, options), offset = _Object$assign2.offset, name = _Object$assign2.name, exactMatch = _Object$assign2.exactMatch, sortName = _Object$assign2.sortName, limit = _Object$assign2.limit; //format: http://gateway.marvel.com/v1/public/comics?ts=TIMESTAMP&apikey=MARVELPUBLICKEY&hash=GENHASH
 
             url = "".concat(marvelURL, "characters?ts=").concat(time, "&apikey=").concat(pubKey, "&hash=").concat(hash, "&offset=").concat(offset, "&orderBy=").concat(sortName, "name&limit=").concat(limit);
 

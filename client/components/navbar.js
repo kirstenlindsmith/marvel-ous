@@ -22,7 +22,7 @@ class Navbar extends Component {
 
           {isLoggedIn ? (
             <div className="right navLinks">
-              {/* The navbar will show these links after a user logs in */}
+              {/* The navbar will show these links AFTER a user logs in */}
               <Link to="/characters">
                 Characters
               </Link>
@@ -42,7 +42,7 @@ class Navbar extends Component {
             </div>
           ) : (
             <div className="right navLinks">
-              {/* The navbar will show these links before a user logs in */}
+              {/* The navbar will show these links BEFORE a user logs in */}
               <Link to="/characters">
                 Characters
               </Link>
@@ -63,9 +63,7 @@ class Navbar extends Component {
   }
 }
 
-/**
- * CONTAINER
- */
+
 const mapStateToProps = state => {
   return {
     isLoggedIn: !!state.user.id,
@@ -86,9 +84,7 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar)
 
-/**
- * PROP TYPES
- */
+
 Navbar.propTypes = {
   handleClick: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,

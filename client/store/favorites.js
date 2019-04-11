@@ -22,7 +22,6 @@ const removeFromFavorites = name => ({type: REMOVE_FROM_FAVORITES, name})
 /**
  * THUNK CREATORS
  */
-
 export const fetchFavorites = () => {
   return async dispatch => {
     try {

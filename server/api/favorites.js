@@ -2,7 +2,8 @@ const router = require('express').Router()
 const {Favorite} = require('../db/models')
 module.exports = router
 
-//default route is /api/favorites
+//api/favorites
+
 router.get('/', async (req, res, next) => {
   try {
     const userId = req.user.id

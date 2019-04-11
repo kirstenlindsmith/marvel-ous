@@ -26,8 +26,7 @@ class Routes extends Component {
 
     return (
       <Switch>
-        {/* Routes placed here are available to all visitors, logged in or not*/}
-
+        {/* These first routes are available to ALL visitors, logged in or not*/}
 
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
@@ -36,11 +35,10 @@ class Routes extends Component {
           exact path="/characters"
           render={()=> <AllCharacters pageType='allCharacters'/>}
         />
-        {/* <Route path="/character/:characterId" component={OneCharacter} /> */}
 
         {isLoggedIn && (
           <Switch>
-            {/* Below routes are only available after logging in */}
+            {/* Below routes are only available AFTER logging in */}
             <Route exact path="/" component={Home} />
             <Route exact path="/home" component={Home} />
             <Route
@@ -57,13 +55,9 @@ class Routes extends Component {
   }
 }
 
-/**
- * CONTAINER
- */
+
 const mapStateToProps = state => {
   return {
-    // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
-    // Otherwise, state.user will be an empty object, and state.user.id will be falsey
     isLoggedIn: !!state.user.id
   }
 }
@@ -76,12 +70,9 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-// The `withRouter` wrapper makes sure that updates are not blocked when the url changes
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Routes))
 
-/**
- * PROP TYPES
- */
+
 Routes.propTypes = {
   loadInitialData: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired

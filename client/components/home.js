@@ -20,30 +20,26 @@ export const Home = (props) => {
         
           <div id='welcome'>
             
-            {!username && 
-              <div id='noUserTitle'>
-                <h4>
-                  Welcome
-                </h4>
-                <Link to='/characters'><p>click here to start</p></Link>
-              </div>
+            {!username ? (
+                <div id='noUserTitle'>
+                  <h4>
+                    Welcome
+                  </h4>
+                  <Link to='/characters'><p>click here to start</p></Link>
+                </div>
+              ) : (
+                <div id="userTitle">
+                  <h4>
+                    Welcome
+                  </h4>
+                  <h3 id="homeUsername">
+                    {username}
+                  </h3>
+                  <Link to='/characters'><p>click here to start</p></Link>
+                </div>  
+              )
             }
-            
-            {username &&
-              <div id="userTitle">
-                <h4>
-                  Welcome
-                </h4>
-                <h3 id="homeUsername">
-                  {username}
-                </h3>
-                <Link to='/characters'><p>click here to start</p></Link>
-              </div>  
-            }
-            
           </div>
-          
-           
       </center>
     </div>
   )

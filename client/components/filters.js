@@ -87,10 +87,7 @@ class Filters extends Component {
             <button className='filterButton' type='reset' onClick={this.handleReset}>RESET</button>
             <button className='filterButton' type='submit' bsstyle="primary">APPLY</button>
           </div>
-          {/* <ButtonToolbar className='filters'>
-            <Button type='reset' onClick={this.handleReset}>RESET</Button>
-            <Button type='submit' bsstyle="primary">APPLY</Button>
-          </ButtonToolbar> */}
+
         </form>
       </Card>
     )
