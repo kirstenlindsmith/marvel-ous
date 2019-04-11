@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
+import posed from 'react-pose'
 import history from '../history'
 import {Modal, Tabs, Tab} from 'react-bootstrap'
 import toastr from 'toastr'
@@ -23,12 +24,23 @@ toastr.options = {
   hideMethod: 'fadeOut'
 }
 
+const AnimationBox = posed.div({
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { 
+      opacity: { ease: [.01, .64, .99, .56] , duration: 500 },
+    }
+  }
+})
+
 class OneCharacter extends Component {
   constructor(props) {
     super(props)
     const {instance} = props
     this.state = {
       displayModal: false,
+      isVisible: false,
       id: instance.id,
       fullname: instance.name,
       name:
@@ -65,6 +77,13 @@ class OneCharacter extends Component {
     if (this.props.user.id){
       await this.props.fetchFavorites()
     }
+    setInterval(()=>{
+      this.setState({isVisible: true})
+    }, 400)
+  }
+  
+  componentWillUnmount(){
+    this.setState({isVisible: false})
   }
 
   toggleModal() {
@@ -150,6 +169,7 @@ class OneCharacter extends Component {
     )
   }
 
+
   render() {
     const {
       id,
@@ -160,7 +180,8 @@ class OneCharacter extends Component {
       descriptionPreview,
       detail,
       wiki,
-      comicLink
+      comicLink,
+      isVisible
     } = this.state
 
     let inFaves
@@ -174,6 +195,7 @@ class OneCharacter extends Component {
       : this.redirectToLogin
 
     return (
+      <AnimationBox className='animationBox' pose={isVisible? 'visible' : 'hidden'}>
       <div className="character">
         <div className="text-center character-name" onClick={this.toggleModal}>
           <h3>{name}</h3>
@@ -253,6 +275,7 @@ class OneCharacter extends Component {
           </Modal.Body>
         </Modal>
       </div>
+      </AnimationBox>
     )
   }
 }

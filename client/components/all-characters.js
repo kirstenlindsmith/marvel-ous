@@ -119,11 +119,12 @@ class AllCharacters extends Component {
             }
           },
           sortName,
-          limitPerPage: limit
+          limitPerPage: limit,
         })
-        this.setState({
-          loading: false
-        })
+          setTimeout(()=>{
+            this.setState({loading: false})
+          }, 500)
+          
       } catch (error) {
         console.error('Error searching for favorites:', error)
       }
@@ -144,11 +145,11 @@ class AllCharacters extends Component {
               }
             },
             sortName,
-            limitPerPage: limit
+            limitPerPage: limit,
           })
-          this.setState({
-            loading: false
-          })
+          setTimeout(()=>{
+            this.setState({loading: false})
+          }, 500)
         } catch (error) {
           console.error('Error searching Marvel characters:', error)
         }
