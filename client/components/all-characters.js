@@ -292,9 +292,7 @@ class AllCharacters extends Component {
   }
 }
 
-/**
- * CONTAINER
- */
+
 const mapStateToProps = state => {
   // console.log('faves in mapState:', state.favorites)
   return {

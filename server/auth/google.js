@@ -5,11 +5,11 @@ const {User} = require('../db/models')
 module.exports = router
 
 /**
- * use `secrets.js` like so:
+ * format from `secrets.js`:
  *
- * process.env.GOOGLE_CLIENT_ID = 'your google client id'
- * process.env.GOOGLE_CLIENT_SECRET = 'your google client secret'
- * process.env.GOOGLE_CALLBACK = '/your/google/callback'
+ * process.env.GOOGLE_CLIENT_ID = 'google client id'
+ * process.env.GOOGLE_CLIENT_SECRET = 'google client secret'
+ * process.env.GOOGLE_CALLBACK = '/auth/google/callback'
  */
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
@@ -23,16 +23,28 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
 
   const strategy = new GoogleStrategy(
     googleConfig,
-    (token, refreshToken, profile, done) => {
+    async (token, refreshToken, profile, done) => {
       const googleId = profile.id
       const email = profile.emails[0].value
 
-      User.findOrCreate({
+    //  try {
+    //    const user = await User.findOrCreate({
+    //     where: {googleId},
+    //     defaults: {email}
+    //    })
+      
+    //   done(null, user)
+      
+    //  } catch (error) {
+    //    console.error('Error finding or creating google user:', error)
+    //  }
+    User.findOrCreate({
         where: {googleId},
         defaults: {email}
       })
         .then(([user]) => done(null, user))
         .catch(done)
+     
     }
   )
 

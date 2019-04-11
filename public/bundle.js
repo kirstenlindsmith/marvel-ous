@@ -674,10 +674,6 @@ function (_Component) {
 
   return AllCharacters;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-/**
- * CONTAINER
- */
-
 
 var mapStateToProps = function mapStateToProps(state) {
   // console.log('faves in mapState:', state.favorites)
@@ -888,7 +884,17 @@ function (_Component) {
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           id: "loginSubmit",
           type: "submit"
-        }, displayName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+        }, displayName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "/auth/google"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          className: "googleOAuth"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          id: "googleLoginImg",
+          src: "https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          id: "loginWithGoogle"
+        }, displayName, " with Google"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
           to: "/signup"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           type: "button",
@@ -933,10 +939,21 @@ function (_Component) {
           id: "signup",
           type: "submit",
           disabled: !isButtonWorking
-        }, displayName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+        }, displayName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "/auth/google"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          className: "googleOAuth"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          id: "googleSignupImg",
+          src: "https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          id: "signupWithGoogle"
+        }, displayName, " with Google"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
           to: "/login"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           type: "button",
+          id: "loginFromSignup",
           className: "signupButton"
         }, "Login")), error && error.response && !this.freshpage && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           id: "error"
@@ -1175,6 +1192,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Home = function Home(props) {
+  var email = props.email;
+  var username;
+
+  if (email) {
+    var emailUsername = props.email.slice(0, props.email.indexOf('@'));
+    username = emailUsername.slice(0, 1).toUpperCase() + emailUsername.slice(1);
+  }
+
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "landing-page"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("center", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -1183,15 +1208,18 @@ var Home = function Home(props) {
     src: "/assets/characters.jpg"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "welcome"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
-    className: "homeTitle"
-  }, "Welcome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+  }, !username && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    id: "noUserTitle"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Welcome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
     to: "/characters"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "click here to start")))));
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "click here to start"))), username && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    id: "userTitle"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Welcome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+    id: "homeUsername"
+  }, username), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+    to: "/characters"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "click here to start"))))));
 };
-/**
- * CONTAINER
- */
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
@@ -79701,6 +79729,9 @@ module.exports = function(originalModule) {
 
 /* WEBPACK VAR INJECTION */(function(process) {process.env.MARVEL_PUB_KEY = '844835b8ba80bbf13ec04cc6cc49c299';
 process.env.MARVEL_API_KEY = 'a8c1f4c64658ef3f758f89ff911434ef17821286';
+process.env.GOOGLE_CLIENT_ID = '711896344541-e946uj56t3h19s1jhduast63lfunb1rm.apps.googleusercontent.com';
+process.env.GOOGLE_CLIENT_SECRET = 'xMGrZw9srTsX0TZ3pM2GMW6o';
+process.env.GOOGLE_CALLBACK = '/auth/google/callback';
 module.exports = {
   'MarvelPubKey': '844835b8ba80bbf13ec04cc6cc49c299',
   'MarvelAPIKey': 'a8c1f4c64658ef3f758f89ff911434ef17821286'
