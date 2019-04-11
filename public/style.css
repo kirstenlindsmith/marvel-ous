@@ -123,6 +123,10 @@ button:hover {
   height: 35rem;
 }
 
+.landing-page {
+  overflow: hidden
+}
+
 .landing-page video {
   min-height: 100vh;
   min-width: 100vw;
