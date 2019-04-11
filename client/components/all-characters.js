@@ -9,6 +9,8 @@ import {getMarvelCharacters, getFavoriteCharacter} from '../../server/api/charac
 import {me, fetchFavorites, deleteFavorite} from '../store'
 
 class AllCharacters extends Component {
+  isMounted = false
+  
   constructor(props){
     super(props)
     this.state = {
@@ -41,7 +43,9 @@ class AllCharacters extends Component {
   }
 
   async componentDidMount() {
-    if (this.props.pageType === 'favorites' && !this.props.user.id){
+    this.isMounted = true
+    
+    if (this.props.pageType === 'favorites' && !this.props.user.id && this.isMounted){
       await this.props.fetchFavorites()
     }
      
@@ -65,7 +69,11 @@ class AllCharacters extends Component {
       })
     }
   }
-
+  
+  componentWillUnmount() {
+    this.isMounted = false
+  }
+  
   async search(options = {}) {
 
     const {page, name, exactMatch, sortName, limit} = Object.assign({
@@ -77,18 +85,16 @@ class AllCharacters extends Component {
     }, options)
 
     const offset = page ? (page -1) * limit : 0
-
+    
     try {
-      this.setState({
-        loading: true
-      })
       
-      const filtering = !!(this.state.filters.name.value.length || this.state.sortName.length)
-      const searchName = this.state.filters.name.value
-      const sortName = this.state.sortName
-      //NOT USING THIS RN BUT IF I HAVE TIME I WANT TO ADD FILTERS ON THE FAVES
+      if (this.isMounted) {
+        this.setState({
+          loading: true
+        })
+      }
       
-      if (this.props.pageType==='favorites' && this.props.user.id) {
+      if (this.props.pageType==='favorites' && this.props.user.id && this.isMounted) {
         try {
           await this.props.fetchFavorites()
           let maxPage = 1;
@@ -99,14 +105,6 @@ class AllCharacters extends Component {
               )
             })
           )
-
-          if (filtering){
-            if (exactMatch){
-              characters = characters.filter(char => char.name === searchName.toLowerCase().trim())
-            } else {
-              characters = characters.filter(char => char.name.startsWith(searchName.toLowerCase().trim()))
-            }
-          }
           
           this.setState({
           characters,
@@ -130,26 +128,30 @@ class AllCharacters extends Component {
       }
         
       } else {
-
         try {
-          const {characters, maxPage} = await getMarvelCharacters({ offset, name, exactMatch, sortName, limit })
-        
-          this.setState({
-            characters,
-            maxPage,
-            page: characters.length ? parseInt(page) : 0, //to avoid type coercion
-            filters: {
-              name: {
-                value: name,
-                exactMatch
-              }
-            },
-            sortName,
-            limitPerPage: limit,
-          })
-          setTimeout(()=>{
-            this.setState({loading: false})
-          }, 500)
+          if (this.isMounted){  
+            const {characters, maxPage} = await getMarvelCharacters({ offset, name, exactMatch, sortName, limit })
+          
+            this.setState({
+              characters,
+              maxPage,
+              page: characters.length ? parseInt(page) : 0, //to avoid type coercion
+              filters: {
+                name: {
+                  value: name,
+                  exactMatch
+                }
+              },
+              sortName,
+              limitPerPage: limit,
+            })
+
+            if (characters.length){
+              setTimeout(()=>{
+                this.setState({loading: false})
+              }, 500)
+            }
+          }
         } catch (error) {
           console.error('Error searching Marvel characters:', error)
         }
@@ -235,6 +237,7 @@ class AllCharacters extends Component {
 
     return (
       <div className='all-characters'>
+        
       {this.props.pageType!=='favorites' && <div id="mainSearchDiv" className="dropdown search">
         <span
           className='dropLink'
@@ -258,6 +261,13 @@ class AllCharacters extends Component {
           />
         </div>
       </div>}
+      
+        {this.props.pageType!=='favorites' && 
+          <div className='pageTitle'>characters</div>
+        }
+        {this.props.pageType==='favorites' && 
+          <div className='pageTitle'>favorites</div>
+        }
 
         {!this.state.loading &&
           <div className="character-gallery">

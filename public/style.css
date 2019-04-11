@@ -1,3 +1,7 @@
+html {
+  overflow-x: hidden !important;
+}
+
 html a {
   color: rgb(243, 102, 102);
   cursor: pointer;
@@ -18,6 +22,28 @@ html a:hover {
   display: none
 }
 
+html::-webkit-scrollbar-track {
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+html::-webkit-scrollbar {
+  width: 1em;
+  background-color: #f5f5f5;
+}
+
+html::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.44, #ee7979),
+    color-stop(0.72, #d83131),
+    color-stop(0.86, #c90c0c)
+  );
+}
+
 button {
   display: inline-block;
   position: relative;
@@ -28,6 +54,7 @@ button {
   font-weight: bold;
   color: white;
   text-decoration: none;
+  font-family: "Comic Sans MS", helvetica, sans-serif !important;
   text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.3);
   border-radius: 7px !important;
   outline: 0;
@@ -90,6 +117,176 @@ button:after {
   height: 35rem;
 }
 
+.landing-page video {
+  min-height: 100vh;
+  min-width: 100vw;
+  object-fit: contain;
+  /* position: absolute; */
+  /* top: 85px; */
+  /* left: -100px; */
+  z-index: -1;
+}
+
+.landing-page img {
+   min-height: 100vh;
+   min-width: 100vw;
+   position: fixed;
+   top: 85px;
+   left: -100px;
+   opacity: 0.75;
+   z-index: -1;
+}
+
+#welcome h4{
+  font-family: 'Open Sans', sans-serif;
+  color: #555;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 100px;
+  font-weight: 800;
+  letter-spacing: -3px;
+  text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
+  position: absolute;
+  left: 33vw;
+  top: 400px
+}
+
+#welcome p {
+  transform:rotate(-8deg);
+  color: white;
+  font: 30px American Typewriter, serif;
+  background: rgba(221, 75, 75, 0.7);
+  padding: 10px;
+  padding-left: 50px;
+  padding-right: 50px;
+  position: absolute;
+  left: 500px;
+  top: 530px
+}
+
+#welcome p:hover, #welcome p:focus, #welcome p:active {
+  transform: scale(1.4) rotate(4deg);
+  -webkit-transform: scale(1.4) rotate(4deg);
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+}
+
+.login h1 {
+  font-family: 'Dokdo', helvetica, sans-serif;
+  font-size: 5rem;
+  color: rgb(243, 102, 102);
+}
+
+.login button {
+  margin: 10px;
+  width: 175px
+}
+
+.authImage {
+  position: absolute;
+  height: 500px;
+  align-self: center
+}
+
+#spidey {
+  left: 55vw;
+  top: 30vh;
+  z-index: -10
+}
+
+#peter {
+  left: 12vw;
+  top: 20vh;
+  z-index: -10
+}
+
+.authLabel {
+  display: block;
+  margin: 0;
+  font-family: "Comic Sans MS", helvetica, sans-serif !important
+}
+
+.login.form-container {
+  display: flex;
+  flex-flow: column wrap;
+  margin: 15px;
+  width: 300px;
+  align-content: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+#loginForm {
+  width: 252px
+}
+
+.login form {
+  display: flex;
+  flex-flow: column wrap;
+  margin: auto;
+  padding: 20px 20px 20px 20px;
+  background-color: #86dfef;
+  border-radius: 15%;
+}
+
+.login form .row {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+
+.login form input {
+  border: 1px solid #bebebe;
+  border-radius: 5px;
+  margin: 5px auto;
+  padding: 5px;
+}
+
+.signupButton {
+  margin: 0 auto
+}
+
+#signup {
+  align-self: center
+}
+
+#signUpFromLogin {
+  margin-top: 18px
+}
+
+#loginSubmit {
+  margin: 0 auto;
+  margin-top: 10px
+}
+
+form label {
+  font-weight: bold;
+}
+
+.fieldError {
+  border: 1px solid red !important;
+}
+
+.errorWarning {
+  color: rgb(192, 15, 15) !important;
+  font-weight: bold !important;
+  font-size: 10px !important;
+}
+
+#error {
+  color: rgb(192, 15, 15) !important;
+  font-weight: bold !important;
+  font-size: 12px !important;
+}
+
 .navContainer {
   display: flex;
   flex-direction: row;
@@ -100,6 +297,7 @@ button:after {
 .navBar {
   display: flex;
   color: rgb(243, 102, 102);
+  font-family: "Comic Sans MS", helvetica, sans-serif !important
 }
 
 .navBar h1 {
@@ -107,7 +305,7 @@ button:after {
   padding-top: 6%;
   margin-bottom: -4%;
   margin-left: 7%;
-  font-family: 'Cabin Sketch', cursive;
+  font-family: 'Cabin Sketch', helvetica, sans-serif;
   font-size: 44pt;
 }
 
@@ -184,6 +382,7 @@ button:after {
 .search {
   display: flex;
   flex-direction: row;
+  font-family: "Comic Sans MS", helvetica, sans-serif !important
 }
 
 .search .dropLink{
@@ -198,13 +397,12 @@ button:after {
   background-color: white;
   border-radius: 5%;
   padding: 10px;
-  margin-left: calc(100vw - 50%);
+  margin-left: 58vw;
   position: absolute;
 }
 
 #closeSearch {
   margin-left: 90%;
-  /* border-radius: 50%; */
   text-align: center;
   height: 25px;
   width: 25px;
@@ -242,16 +440,57 @@ button:after {
 }
 
 #filterByName {
-  width: 20rem
+  width: 20rem;
+  text-align: center;
 }
 
 #checkboxInstructions {
   margin-left: 5px
 }
 
+#searchTitle {
+  font-weight: bold;
+  font-size: 12pt;
+}
+
+#helpBlock {
+  font-size: 8pt !important
+}
+
+.input-group-prepend {
+  margin-left: 3rem;
+  margin-bottom: 1rem;
+}
+
+#sortByName.form-control{
+  height: 1.6rem;
+  margin-left: 2px;
+  margin-right: 4px
+}
+
+#resultsPerPage.form-control{
+  height: 1.6rem;
+  margin-left: 2px
+}
+
+label.form-label {
+  font-size: 10pt;
+  margin-left: 2px;
+  margin-right: 2px
+}
+
 .paginator nav {
   display: flex;
   justify-content: center
+}
+
+.pageTitle {
+  font-family: 'Dokdo', helvetica, sans-serif;
+  font-size: 3.5rem;
+  color: rgb(243, 102, 102);
+  position: absolute;
+  top: 0.8rem;
+  left: 19rem;
 }
 
 .character-gallery {
@@ -268,26 +507,29 @@ button:after {
   max-height: 400px;
   text-align: center;
   margin: 20px;
-  box-shadow: 1px 4px 8px 0 rgba(0, 0, 0, 0.4)
+  box-shadow: 1px 4px 8px 0 rgba(0, 0, 0, 0.4);
+  font-family: "Comic Sans MS", helvetica, sans-serif !important
 }
 
 .character:hover {
-  box-shadow: 0 0 15px 5px red;
+  box-shadow: 0 0 15px 5px #ef7575;
   cursor: pointer;
 }
 
 .character-name {
   background: linear-gradient(
     90deg,
-    rgb(192, 0, 0) 0%,
-    rgb(216, 49, 49) 50%,
-    rgb(238, 121, 121) 100%
+    #a50000 0%,
+    #c90c0c 25%,
+    #d83131 50%,
+    #ee7979 75%,
+    #ffafaf 100%
   );
   background-repeat: no-repeat;
   background-attachment: fixed;
   color: white;
   padding-top: 8px;
-  font-family: 'Cabin Sketch', cursive;
+  font-family: 'Cabin Sketch', helvetica, sans-serif;
 }
 
 .character-image {

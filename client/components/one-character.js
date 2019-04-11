@@ -35,6 +35,8 @@ const AnimationBox = posed.div({
 })
 
 class OneCharacter extends Component {
+  isMounted = false
+  
   constructor(props) {
     super(props)
     const {instance} = props
@@ -73,17 +75,21 @@ class OneCharacter extends Component {
   }
 
   async componentDidMount() {
+    this.isMounted = true
+    
     await this.props.getUser()
     if (this.props.user.id){
       await this.props.fetchFavorites()
     }
     setInterval(()=>{
-      this.setState({isVisible: true})
+      if (this.isMounted){
+        this.setState({isVisible: true})
+      }
     }, 400)
   }
   
   componentWillUnmount(){
-    this.setState({isVisible: false})
+    this.isMounted = false
   }
 
   toggleModal() {
