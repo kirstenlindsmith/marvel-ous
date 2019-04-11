@@ -79705,7 +79705,7 @@ module.exports = function(originalModule) {
 process.env.MARVEL_API_KEY = 'a8c1f4c64658ef3f758f89ff911434ef17821286';
 process.env.GOOGLE_CLIENT_ID = '711896344541-e946uj56t3h19s1jhduast63lfunb1rm.apps.googleusercontent.com';
 process.env.GOOGLE_CLIENT_SECRET = 'xMGrZw9srTsX0TZ3pM2GMW6o';
-NODE_ENV = 'production' ? process.env.GOOGLE_CALLBACK = 'https://marvel-ous.herokuapp.com/auth/google/callback' : undefined;
+process.env.GOOGLE_CALLBACK = '/auth/google/callback';
 module.exports = {
   'MarvelPubKey': '844835b8ba80bbf13ec04cc6cc49c299',
   'MarvelAPIKey': 'a8c1f4c64658ef3f758f89ff911434ef17821286'
