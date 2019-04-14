@@ -9,7 +9,7 @@ class Navbar extends Component {
 
   componentDidMount(){
     this.props.getUser()
-    console.log('USER IN NAVBAR CDM:', Auth.currentAuthenticatedUser())
+    // console.log('USER IN NAVBAR CDM:', Auth.currentAuthenticatedUser())
   }
 
   // shouldComponentUpdate(nextProps) {
@@ -21,7 +21,6 @@ class Navbar extends Component {
   // }
 
   render(){
-    console.log('state?', this.props.state)
     const {handleClick, isLoggedIn} = this.props
 
     return (
@@ -42,9 +41,9 @@ class Navbar extends Component {
                   Account
                 </a>
                 <div className="dropdown-content">
-                  <Link to="/favorites">
+                  {/* <Link to="/favorites">
                     Favorites
-                  </Link>
+                  </Link> */}
                   <a href="#" onClick={handleClick}>
                     Logout
                   </a>

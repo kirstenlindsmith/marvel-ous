@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
@@ -47,7 +48,7 @@ class AllCharacters extends Component {
   async componentDidMount() {
     this.isMounted = true
 
-    if (this.props.pageType === 'favorites' && !this.props.user.id && this.isMounted){
+    if (this.props.pageType === 'favorites' && !this.props.user.attributes && this.isMounted){
       await this.props.fetchFavorites()
     }
 
@@ -96,7 +97,7 @@ class AllCharacters extends Component {
         })
       }
 
-      if (this.props.pageType==='favorites' && this.props.user.id && this.isMounted) {
+      if (this.props.pageType==='favorites' && this.props.user.attributes && this.isMounted) {
         try {
           await this.props.fetchFavorites()
           let maxPage = 1;

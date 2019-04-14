@@ -157,6 +157,14 @@ button:hover {
   top: 400px
 }
 
+#userTitle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center
+}
+
 #welcome #userTitle h4{
   font-family: 'Open Sans', sans-serif;
   color: #555;
@@ -166,9 +174,7 @@ button:hover {
   font-weight: 800;
   letter-spacing: -3px;
   text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
-  position: absolute;
-  left: 32vw;
-  top: 385px
+  margin-top: 275px
 }
 
 #welcome h3{
@@ -180,12 +186,7 @@ button:hover {
   font-weight: 800;
   letter-spacing: -3px;
   text-shadow: 4px 3px 0px #fff, 9px 8px 0px rgba(0,0,0,0.15);
-  /* position: absolute;
-  left: 34.5vw;
-  top: 490px; */
-  display: inline-flex;
-  align-self: center;
-  margin-top: 380px
+  margin-top: -20px
 }
 
 #welcome #noUserTitle p {
@@ -209,9 +210,6 @@ button:hover {
   padding: 10px;
   padding-left: 50px;
   padding-right: 50px;
-  position: absolute;
-  left: 38vw;
-  top: 550px
 }
 
 #welcome #userTitle p:hover, #welcome #userTitle p:focus, #welcome #userTitle p:active {

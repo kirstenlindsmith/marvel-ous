@@ -3,11 +3,18 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 
 export const Home = (props) => {
-  const email = props.email
+  let email
+  let nameStyle
+  if (props.user) email = props.user.email
+  console.log('USER at home:', props.user)
   let username
   if (email){
-   const emailUsername = props.email.slice(0, (props.email.indexOf('@')))
+   const emailUsername = email.slice(0, (email.indexOf('@')))
    username = emailUsername.slice(0,1).toUpperCase()+emailUsername.slice(1)
+   console.log('USERNAME LENGTH', emailUsername.length)
+  //  const nameSize = emailUsername.length * 10
+  // //  nameStyle = {left: `calc(50vw)-${nameSize}px`}
+  //   nameStyle = {left: `100px !important`}
   }
 
   return (
@@ -16,10 +23,10 @@ export const Home = (props) => {
       <center>
         <div id="graphic">
           <img src="/assets/characters.jpg"/>
-        </div>  
-        
+        </div>
+
           <div id='welcome'>
-            
+
             {!username ? (
                 <div id='noUserTitle'>
                   <h4>
@@ -32,11 +39,11 @@ export const Home = (props) => {
                   <h4>
                     Welcome
                   </h4>
-                  <h3 id="homeUsername">
+                  <h3 id="homeUsername" stye={nameStyle}>
                     {username}
                   </h3>
                   <Link to='/characters'><p>click here to start</p></Link>
-                </div>  
+                </div>
               )
             }
           </div>
@@ -48,7 +55,7 @@ export const Home = (props) => {
 
 const mapStateToProps = state => {
   return {
-    email: state.user.email
+    user: state.user.attributes
   }
 }
 
