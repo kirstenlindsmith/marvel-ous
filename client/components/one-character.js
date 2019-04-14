@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
@@ -28,7 +29,7 @@ const AnimationBox = posed.div({
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { 
+    transition: {
       opacity: { ease: [.01, .64, .99, .56] , duration: 500 },
     }
   }
@@ -36,7 +37,7 @@ const AnimationBox = posed.div({
 
 class OneCharacter extends Component {
   isMounted = false
-  
+
   constructor(props) {
     super(props)
     const {instance} = props
@@ -76,7 +77,7 @@ class OneCharacter extends Component {
 
   async componentDidMount() {
     this.isMounted = true
-    
+
     await this.props.getUser()
     if (this.props.user.id){
       await this.props.fetchFavorites()
@@ -87,7 +88,7 @@ class OneCharacter extends Component {
       }
     }, 400)
   }
-  
+
   componentWillUnmount(){
     this.isMounted = false
   }
@@ -189,9 +190,9 @@ class OneCharacter extends Component {
       comicLink,
       isVisible
     } = this.state
-    
+
     const finalDescription = description.includes('ï¿½') ? description.replace(/\ï¿½/g, `'`) : description
-    
+
     const finalDescriptionPreview = descriptionPreview.includes('ï¿½') ? descriptionPreview.replace((/\ï¿½/g, `'`), `'`) : descriptionPreview
 
     let inFaves
@@ -227,7 +228,7 @@ class OneCharacter extends Component {
         >
           <Modal.Header>
             <Modal.Title>{fullname}</Modal.Title>
-            {!inFaves ? (
+            {/* {!inFaves ? (
               <button
                 className="addFaveButton"
                 type="button"
@@ -244,20 +245,20 @@ class OneCharacter extends Component {
               >
                 Remove from Favorites
               </button>
-            )}
+            )} */}
             <button type="button" onClick={this.toggleModal}>
               x
             </button>
           </Modal.Header>
           <Modal.Body>
-          
+
             <div id="mainModalBody">
               <div id="character-modal-image">
                 <img src={imageUrl} alt={name} />
               </div>
               <p>{finalDescription}</p>
             </div>
-            
+
             <div className="character-modal-description">
               {detail && (
                 <a href={detail.url} className="smallButton"><button type='button'>

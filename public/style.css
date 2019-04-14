@@ -343,12 +343,12 @@ button:hover {
 }
 
 .signupButton {
-  margin: 0 auto
+  margin: 0 auto;
 }
 
 #signup {
   align-self: center;
-  margin-bottom: 0;
+  margin-bottom: 10px;
 }
 
 #signUpFromLogin {
@@ -361,7 +361,8 @@ button:hover {
 
 #loginSubmit {
   margin: 0 auto;
-  margin-top: 10px
+  margin-top: 10px;
+  margin-bottom: 10px
 }
 
 .googleOAuth {

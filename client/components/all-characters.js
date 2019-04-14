@@ -90,7 +90,7 @@ class AllCharacters extends Component {
     const offset = page ? (page -1) * limit : 0
 
     try {
-      // debugger
+
       if (this.isMounted) {
         this.setState({
           loading: true

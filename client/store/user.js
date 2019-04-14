@@ -47,8 +47,8 @@ export const handleSignIn = (email, password) => async dispatch => {
   try {
     if (Auth.currentAuthenticatedUser().attributes){
       dispatch(getUser({username: Auth.currentAuthenticatedUser().attributes.email}))
-      history.push('/characters')
     }
+    history.push('/characters')
   } catch (err) {
     console.error('Error storing signed in user on state:', err)
     return dispatch(getUser({error: err}))

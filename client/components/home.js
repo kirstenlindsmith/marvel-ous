@@ -3,18 +3,12 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 
 export const Home = (props) => {
-  let email
-  let nameStyle
+  let email;
   if (props.user) email = props.user.email
-  console.log('USER at home:', props.user)
   let username
   if (email){
    const emailUsername = email.slice(0, (email.indexOf('@')))
    username = emailUsername.slice(0,1).toUpperCase()+emailUsername.slice(1)
-   console.log('USERNAME LENGTH', emailUsername.length)
-  //  const nameSize = emailUsername.length * 10
-  // //  nameStyle = {left: `calc(50vw)-${nameSize}px`}
-  //   nameStyle = {left: `100px !important`}
   }
 
   return (
@@ -39,7 +33,7 @@ export const Home = (props) => {
                   <h4>
                     Welcome
                   </h4>
-                  <h3 id="homeUsername" stye={nameStyle}>
+                  <h3 id="homeUsername">
                     {username}
                   </h3>
                   <Link to='/characters'><p>click here to start</p></Link>

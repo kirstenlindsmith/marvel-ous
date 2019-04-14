@@ -9,12 +9,13 @@ class Navbar extends Component {
 
   componentDidMount(){
     this.props.getUser()
-    // console.log('USER IN NAVBAR CDM:', Auth.currentAuthenticatedUser())
+    console.log('USER IN NAVBAR CDM:', Auth.currentAuthenticatedUser())
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   // return (this.props !== nextProps)
-  // }
+  async shouldComponentUpdate() {
+    console.log('in SCU?', await Auth.currentAuthenticatedUser())
+    return !(await Auth.currentAuthenticatedUser())
+  }
 
   // componentDidUpdate(prevProps) {
   //   if (Object.keys(this.))
