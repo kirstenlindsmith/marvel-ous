@@ -1,12 +1,12 @@
+/* eslint-disable complexity */
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {auth} from '../store'
+import {handleSignIn, handleSignUp} from '../store'
 
 class AuthForm extends Component {
-  freshpage = false
-  
+
   constructor() {
     super()
     this.state = {
@@ -19,23 +19,18 @@ class AuthForm extends Component {
     }
     this.handleFieldChange = this.handleFieldChange.bind(this)
     this.isEmailValid = this.isEmailValid.bind(this)
+    this.isPasswordValid = this.isPasswordValid.bind(this)
     this.doFieldsHaveErrors = this.doFieldsHaveErrors.bind(this)
     this.shouldTheFieldMarkError = this.shouldTheFieldMarkError.bind(this)
     this.handleBlurWhenInteracting = this.handleBlurWhenInteracting.bind(this)
     this.variablesForRender = this.variablesForRender.bind(this)
   }
-  
-  componentDidMount(){
-    this.freshpage = true
-  }
-  
+
+
   shouldComponentUpdate(nextProps){
     return !!(this.props.displayName !== nextProps.displayname)
   }
-  
-  componentWillUnmount(){
-    this.freshpage = false
-  }
+
 
   handleFieldChange(event) {
     this.setState({
@@ -48,11 +43,25 @@ class AuthForm extends Component {
     return email.includes('@') && email.includes('.')
   }
 
-  doFieldsHaveErrors() {
+  isPasswordValid() {
     const {password} = this.state
+    const rightLength = password.length >= 6
+    const hasUppercaseChar = password.includes(/(?=.*[A-Z])/)
+    const hasLowercaseChar = password.includes(/(?=.*[a-z])/)
+    const hasNumber = password.includes(/(?=.*[0-9])/)
+    const hasSpecialChar = password.includes(/(?=.[!@#\$%\^&])/)
+
+    return (rightLength &&
+            hasUppercaseChar &&
+            hasLowercaseChar &&
+            hasNumber &&
+            hasSpecialChar)
+  }
+
+  doFieldsHaveErrors() {
     return {
       email: this.isEmailValid() === false,
-      password: password.length === 0
+      password: this.isPasswordValid() === false
     }
   }
 
@@ -114,18 +123,12 @@ class AuthForm extends Component {
               <label className='authLabel' htmlFor="password">Password</label>
               <input name="password" type="password" />
               <button id='loginSubmit' type="submit">{displayName}</button>
-              <a href="/auth/google">
-                <button type="button" className="googleOAuth">
-                  <img id='googleLoginImg' src="https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png" />
-                  <span id="loginWithGoogle">{displayName} with Google</span>
-                </button>
-              </a>
               <Link to="/signup">
                 <button type="button" id="signUpFromLogin" className="remove">
                   Sign Up
                 </button>
               </Link>
-              {error && error.response && !this.freshpage && <div id="error"> {error.response.data} </div>}
+              {error && error.response && <div id="error"> {error.response.data} </div>}
             </form>
           </div>
         </div>
@@ -149,7 +152,7 @@ class AuthForm extends Component {
               />
               <label className='authLabel' htmlFor="password">Password</label>
               <span className={isPasswordWarningDisplayed}>
-                Password required<br />
+                Password must be 6+ chars, with one UPPERCASE, one lowercase, and one special character.<br />
               </span>
               <input
                 name="password"
@@ -161,18 +164,12 @@ class AuthForm extends Component {
               <button className="signupButton" id="signup" type="submit" disabled={!isButtonWorking}>
                 {displayName}
               </button>
-              <a href="/auth/google">
-                <button type="button" className="googleOAuth">
-                  <img id='googleSignupImg' src="https://www.searchpng.com/wp-content/uploads/2018/11/google_icon_2048.png" />
-                  <span id='signupWithGoogle'>{displayName} with Google</span>
-                </button>
-              </a>
               <Link to='/login'>
                 <button type="button" id="loginFromSignup" className="signupButton">
                   Login
                 </button>
               </Link>
-              {error && error.response && !this.freshpage && <div id="error"> {error.response.data} </div>}
+              {error && error.response && <div id="error"> {error.response.data} </div>}
             </form>
           </div>
           <img className='authImage' id="peter" src="/assets/peter.png" />
@@ -206,7 +203,12 @@ const mapDispatchToProps = dispatch => {
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
-      dispatch(auth(email, password, formName))
+
+      formName === 'login' ? (
+        dispatch(handleSignIn(email, password))
+      ) : (
+        dispatch(handleSignUp(email, password))
+      )
     }
   }
 }

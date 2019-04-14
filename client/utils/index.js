@@ -1,4 +1,13 @@
-//Originally was for testing purposes, keeping this to see the format of the return api data
+import {signUp, handleConfirmationCode, signIn, signOut} from './amplifyUtils'
+
+export {signUp, handleConfirmationCode, signIn, signOut}
+
+
+
+
+
+
+//Below example character originally was for testing purposes, keeping this to see the format of the return Marvel api data
 
 export const exampleCharacter = {
   "code": 200,
