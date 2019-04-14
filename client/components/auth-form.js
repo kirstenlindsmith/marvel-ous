@@ -5,6 +5,10 @@ import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {handleSignIn, handleSignUp} from '../store'
 
+//test password: 12345678910aB!
+//conf code for andrew: 345792
+//conf code for kirsten@mailinator: 293319
+
 class AuthForm extends Component {
 
   constructor() {
@@ -46,16 +50,18 @@ class AuthForm extends Component {
   isPasswordValid() {
     const {password} = this.state
     const rightLength = password.length >= 6
-    const hasUppercaseChar = password.includes(/(?=.*[A-Z])/)
-    const hasLowercaseChar = password.includes(/(?=.*[a-z])/)
-    const hasNumber = password.includes(/(?=.*[0-9])/)
-    const hasSpecialChar = password.includes(/(?=.[!@#\$%\^&])/)
+    const hasUppercaseChar = new RegExp('/(?=.*[A-Z])/')
+    const hasLowercaseChar = new RegExp ('/(?=.*[a-z])/')
+    const hasNumber = new RegExp ('/(?=.*[0-9])/')
+    // const hasSpecialChar = new RegExp('/(?=.[!@#\$%\^&])/')
 
-    return (rightLength &&
-            hasUppercaseChar &&
-            hasLowercaseChar &&
-            hasNumber &&
-            hasSpecialChar)
+    return (rightLength)
+      // &&
+  //           hasUppercaseChar.test(password) &&
+  //           hasLowercaseChar.test(password) &&
+  //           hasNumber.test(password)
+  //           // && hasSpecialChar.test(password)
+  //           )
   }
 
   doFieldsHaveErrors() {
@@ -82,9 +88,10 @@ class AuthForm extends Component {
   }
 
   variablesForRender() {
-    const isButtonWorking = !Object.values(this.doFieldsHaveErrors()).includes(
-      true
-    )
+    // const isButtonWorking = !Object.values(this.doFieldsHaveErrors()).includes(
+    //   true
+    // )
+    const isButtonWorking = true
     const errorDisplay = this.shouldTheFieldMarkError
     const isEmailWarningDisplayed = this.shouldTheFieldMarkError('email')
       ? 'errorWarning'
@@ -128,7 +135,9 @@ class AuthForm extends Component {
                   Sign Up
                 </button>
               </Link>
-              {error && error.response && <div id="error"> {error.response.data} </div>}
+              {error && error.response && <div id="error"> {error.response.data}
+              </div>}
+              {error && !error.response && <div id="error"> {error} </div>}
             </form>
           </div>
         </div>
@@ -152,7 +161,7 @@ class AuthForm extends Component {
               />
               <label className='authLabel' htmlFor="password">Password</label>
               <span className={isPasswordWarningDisplayed}>
-                Password must be 6+ chars, with one UPPERCASE, one lowercase, and one special character.<br />
+                Password must be 6+ chars, <br/>with one UPPERCASE,  <br/>one lowercase,  <br/>and one special character.<br/>
               </span>
               <input
                 name="password"
@@ -184,7 +193,8 @@ const mapLoginToProps = state => {
   return {
     name: 'login',
     displayName: 'Login',
-    error: state.user.error
+    error: state.user.error,
+    user: state.user
   }
 }
 
@@ -192,7 +202,7 @@ const mapSignupToProps = state => {
   return {
     name: 'signup',
     displayName: 'Sign Up',
-    error: state.user.error
+    error: state.user.error,
   }
 }
 
@@ -220,6 +230,5 @@ export const Signup = connect(mapSignupToProps, mapDispatchToProps)(AuthForm)
 AuthForm.propTypes = {
   name: PropTypes.string.isRequired,
   displayName: PropTypes.string.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  error: PropTypes.object
+  handleSubmit: PropTypes.func.isRequired
 }

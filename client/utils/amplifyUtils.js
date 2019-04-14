@@ -1,24 +1,5 @@
 import { Auth } from 'aws-amplify'
-
-// let username = Math.random() + 'cody@gmail.com';
-
-// signUp(username, '12345678910aB!')
-// handleConfirmationCode('kirstenlindsmith@gmail.com', '070887')
-// async function on(){
-//   await signIn('kirstenlindsmith@gmail.com', '12345678910aB!')
-//   console.log('CURRENT USER:', Auth.currentAuthenticatedUser())
-// }
-
-// on()
-
-// console.log('current user line 28:', Auth.currentAuthenticatedUser())
-
-// async function off(){
-//   console.log('hit sign out')
-//   await signOut()
-//   console.log('CURRENT USER after signout:', Auth.currentAuthenticatedUser())
-// }
-// if (Auth.currentAuthenticatedUser().attributes) off()
+//test password: 12345678910aB!
 
 
 export function signUp(username, password){

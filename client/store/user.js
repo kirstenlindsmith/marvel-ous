@@ -2,25 +2,7 @@ import history from '../history'
 import { Auth } from 'aws-amplify'
 import {signUp, handleConfirmationCode, signIn, signOut} from '../utils'
 
-// let username = Math.random() + 'cody@gmail.com';
-
-// signUp(username, '12345678910aB!')
-// handleConfirmationCode('kirstenlindsmith@gmail.com', '070887')
-// async function on(){
-//   await signIn('kirstenlindsmith@gmail.com', '12345678910aB!')
-//   console.log('CURRENT USER:', Auth.currentAuthenticatedUser())
-// }
-
-// on()
-
-// console.log('current user line 28:', Auth.currentAuthenticatedUser())
-
-// async function off(){
-//   console.log('hit sign out')
-//   await signOut()
-//   console.log('CURRENT USER after signout:', Auth.currentAuthenticatedUser())
-// }
-// if (Auth.currentAuthenticatedUser().attributes) off()
+//test password: 12345678910aB!
 
 /**
  * ACTION TYPES
@@ -55,17 +37,21 @@ export const me = () => async dispatch => {
 
 export const handleSignIn = (email, password) => async dispatch => {
   try {
-    await signIn(email, password)
-    console.log('SIGNED IN (in store):', Auth.currentAuthenticatedUser())
+    if (email && password) {
+      await signIn(email, password)
+    } else return;
   } catch (err) {
     console.error('Error signing in in store:', err)
   }
 
   try {
-    dispatch(getUser({username: Auth.currentAuthenticatedUser().attributes.email}))
-    history.push('/home')
+    if (Auth.currentAuthenticatedUser().attributes){
+      dispatch(getUser({username: Auth.currentAuthenticatedUser().attributes.email}))
+      history.push('/characters')
+    }
   } catch (err) {
     console.error('Error storing signed in user on state:', err)
+    return dispatch(getUser({error: err}))
   }
 }
 
@@ -74,10 +60,12 @@ export const handleSignUp = (email, password) => async dispatch => {
     await signUp(email, password)
   } catch (err) {
     console.error('Error signing up in store:', err)
+    return dispatch(getUser({error: err}))
   }
 
   try {
     dispatch(sentCode())
+    history.push('/confirm')
   } catch (err) {
     console.error('Error sending code status to state:', err)
   }
@@ -88,12 +76,15 @@ export const handleConfirmation = (email, code) => async dispatch => {
     await handleConfirmationCode(email, code)
   } catch (err) {
     console.error('Error handling confirmation code in store:', err)
+    return dispatch(getUser({error: err}))
   }
 
   try {
     dispatch(sentCode())
+    history.push('/login')
   } catch (err) {
     console.error('Error sending code status to state:', err)
+    return dispatch(getUser({error: err}))
   }
 }
 

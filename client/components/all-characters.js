@@ -7,11 +7,11 @@ import Filters from './filters';
 import SortByName from './sortByName';
 import Loading from './loading';
 import {getMarvelCharacters, getFavoriteCharacter} from '../../server/api/characters'
-import {me, fetchFavorites, deleteFavorite} from '../store'
+import {me, fetchFavorites} from '../store'
 
 class AllCharacters extends Component {
   isMounted = false
-  
+
   constructor(props){
     super(props)
     this.state = {
@@ -46,11 +46,11 @@ class AllCharacters extends Component {
 
   async componentDidMount() {
     this.isMounted = true
-    
+
     if (this.props.pageType === 'favorites' && !this.props.user.id && this.isMounted){
       await this.props.fetchFavorites()
     }
-     
+
     this.search({
       name: this.state.filters.name.value,
       exactMatch: this.state.filters.name.exactMatch,
@@ -59,7 +59,7 @@ class AllCharacters extends Component {
       limit: this.state.limitPerPage
     })
   }
-  
+
   componentDidUpdate(prevProps){
     if (this.props.favorites.length !== prevProps.favorites.length){
       this.search({
@@ -71,11 +71,11 @@ class AllCharacters extends Component {
       })
     }
   }
-  
+
   componentWillUnmount() {
     this.isMounted = false
   }
-  
+
   async search(options = {}) {
 
     const {page, name, exactMatch, sortName, limit} = Object.assign({
@@ -87,7 +87,7 @@ class AllCharacters extends Component {
     }, options)
 
     const offset = page ? (page -1) * limit : 0
-    
+
     try {
       // debugger
       if (this.isMounted) {
@@ -95,7 +95,7 @@ class AllCharacters extends Component {
           loading: true
         })
       }
-      
+
       if (this.props.pageType==='favorites' && this.props.user.id && this.isMounted) {
         try {
           await this.props.fetchFavorites()
@@ -107,7 +107,7 @@ class AllCharacters extends Component {
               )
             })
           )
-          
+
           this.setState({
           characters,
           maxPage,
@@ -124,16 +124,16 @@ class AllCharacters extends Component {
           setTimeout(()=>{
             this.setState({loading: false})
           }, 500)
-          
+
       } catch (error) {
         console.error('Error searching for favorites:', error)
       }
-        
+
       } else {
         try {
-          if (this.isMounted){  
+          if (this.isMounted){
             const {characters, maxPage} = await getMarvelCharacters({ offset, name, exactMatch, sortName, limit })
-          
+
             this.setState({
               characters,
               maxPage,
@@ -157,9 +157,9 @@ class AllCharacters extends Component {
         } catch (error) {
           console.error('Error searching Marvel characters:', error)
         }
-        
+
       }
-      
+
     } catch (error) {
       console.error('Search failed!', error)
       this.setState({
@@ -245,7 +245,7 @@ class AllCharacters extends Component {
 
     return (
       <div className='all-characters'>
-        
+
       {this.props.pageType!=='favorites' &&
       <div id="mainSearchDiv" className="dropdown search">
         <span
@@ -270,15 +270,15 @@ class AllCharacters extends Component {
           />
         </div>
       </div>}
-      
-        {this.props.pageType!=='favorites' && 
+
+        {this.props.pageType!=='favorites' &&
           <div className='pageTitle'>characters</div>
         }
-        {this.props.pageType==='favorites' && 
+        {this.props.pageType==='favorites' &&
           <div className='pageTitle'>favorites</div>
         }
 
-        {this.props.pageType==='favorites' && !this.state.characters.length && 
+        {this.props.pageType==='favorites' && !this.state.characters.length &&
           <div className='nothingHere'>
             <h3>You don't have any favorites yet!</h3>
             <Link to='/characters'>
@@ -294,7 +294,7 @@ class AllCharacters extends Component {
             )}
           </div>
         }
-        
+
         {searchError ? (
           <div className='nothingHere'>
             <h3 id="searchError">No Results</h3>

@@ -3,14 +3,25 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {me, logout} from '../store'
+import { Auth } from 'aws-amplify'
 
 class Navbar extends Component {
 
   componentDidMount(){
     this.props.getUser()
+    console.log('USER IN NAVBAR CDM:', Auth.currentAuthenticatedUser())
   }
 
+  // shouldComponentUpdate(nextProps) {
+  //   // return (this.props !== nextProps)
+  // }
+
+  // componentDidUpdate(prevProps) {
+  //   if (Object.keys(this.))
+  // }
+
   render(){
+    console.log('state?', this.props.state)
     const {handleClick, isLoggedIn} = this.props
 
     return (
@@ -66,8 +77,9 @@ class Navbar extends Component {
 
 const mapStateToProps = state => {
   return {
-    isLoggedIn: !!state.user.id,
-    user: state.user.email
+    isLoggedIn: !!state.user.attributes,
+    user: state.user.attributes,
+    state: state
   }
 }
 

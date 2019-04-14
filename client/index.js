@@ -12,6 +12,10 @@ import awsConfig from './amplify'
 Auth.configure({Auth: awsConfig})
 Analytics.configure({Auth: awsConfig})
 
+import {handleConfirmationCode} from './utils'
+
+// handleConfirmationCode('andrewmduff@gmail.com', 345792)
+
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>

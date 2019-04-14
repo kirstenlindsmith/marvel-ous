@@ -231,6 +231,11 @@ button:hover {
   text-align: center;
 }
 
+.confirm {
+  display: flex;
+  flex-direction: column;
+}
+
 .login h1 {
   font-family: 'Dokdo', helvetica, sans-serif;
   font-size: 5rem;
@@ -313,13 +318,14 @@ button:hover {
 }
 
 #loginForm {
-  width: 252px
+  max-width: 252px !important
 }
 
 .login form {
   display: flex;
   flex-flow: column wrap;
   margin: auto;
+  max-width: 252px !important;
   padding: 20px 20px 20px 20px;
   background-color: #86dfef;
   border-radius: 15%;
@@ -647,7 +653,7 @@ label.form-label {
   background: -webkit-linear-gradient(top, #333, #eee);
   background: -o-linear-gradient(bottom, #333, #eee);
    background: -moz-linear-gradient(bottom, #333, #eee);
-   background: linear-gradient(to bottom, #333, #eee); 
+   background: linear-gradient(to bottom, #333, #eee);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -705,7 +711,7 @@ label.form-label {
   position: absolute;
   margin-top: 12vh;
   margin-left: 53vw;
-  
+
 }
 
 .nothingHere {
@@ -719,7 +725,7 @@ label.form-label {
   background: -webkit-linear-gradient(left, #ba1f1f , #ff9393);
    background: -o-linear-gradient(right, #ba1f1f, #ff9393);
    background: -moz-linear-gradient(right, #ba1f1f, #ff9393);
-   background: linear-gradient(to right, #ba1f1f , #ff9393); 
+   background: linear-gradient(to right, #ba1f1f , #ff9393);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

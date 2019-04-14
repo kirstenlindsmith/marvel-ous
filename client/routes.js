@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import {
   Login,
   Signup,
+  ConfirmationPage,
   Home,
   AllCharacters,
   OneCharacter,
@@ -29,6 +30,7 @@ class Routes extends Component {
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
+        <Route exact path='/confirm' component={ConfirmationPage} />
         <Route
           exact path="/characters"
           render={()=> <AllCharacters pageType='allCharacters'/>}
@@ -56,7 +58,7 @@ class Routes extends Component {
 
 const mapStateToProps = state => {
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.attributes
   }
 }
 
